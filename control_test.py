@@ -34,6 +34,13 @@ duty_cicle_sprinkler=GPIO.PWM(enb,1000)
 duty_cicle_actuator.start(25)
 duty_cicle_sprinkler.start(26)
 
+TEMPERATURE_LIMIT = 30
+HUMIDITY_LIMIT = 30
+CH4_LIMIT = 30
+SMOKE_LIMIT = 30
+CO_LIMIT = 30
+ACTTION_WINDOW = "close_windows"
+
 def on_connect(client, userdata, flags, rc):
     if rc==0:
         print("Connected OK")
