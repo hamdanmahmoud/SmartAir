@@ -1,13 +1,12 @@
 """
 Main script that should be run by all devices
 """
-import sense 
-import control
 from getpass import getpass
 import os
 import json
 import time
 import requests
+
 
 def main():
     print("/=========================/")
@@ -19,8 +18,12 @@ def main():
     owner = None
     sense_devices = None
     if (device_type == 'c'):
+        import control
         owner = input("Owner username:")
-        sense_devices = input("Associated sense devices (separated by spaces):")
+        sense_devices = input(
+            "Associated sense devices (separated by spaces):")
+    elif (device_type == 's'):
+        import sense
 
     print("/=========================/")
 
@@ -31,7 +34,7 @@ def main():
 
         if (owner):
             os.environ["OWNER"] = owner
-        
+
         if (sense_devices):
             os.environ["SENSE"] = sense_devices
 
@@ -47,6 +50,6 @@ def main():
     else:
         print('Provided input is not valid.')
 
+
 if __name__ == "__main__":
     main()
-
