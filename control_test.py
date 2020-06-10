@@ -34,12 +34,12 @@ duty_cicle_sprinkler=GPIO.PWM(enb,1000)
 duty_cicle_actuator.start(25)
 duty_cicle_sprinkler.start(26)
 
-global TEMPERATURE_LIMIT = 30
-global HUMIDITY_LIMIT = 30
-global CH4_LIMIT = 30
-global SMOKE_LIMIT = 30
-global CO_LIMIT = 30
-global ACTTION_WINDOW = "close_windows"
+TEMPERATURE_LIMIT = 30
+HUMIDITY_LIMIT = 30
+CH4_LIMIT = 30
+SMOKE_LIMIT = 30
+CO_LIMIT = 30
+ACTTION_WINDOW = "close_windows"
 
 def on_connect(client, userdata, flags, rc):
     if rc==0:
@@ -56,6 +56,12 @@ def on_disconnect(client, userdata, rc):
     client.disconnect_flag=True
 
 def on_message(client, data, msg):
+    global TEMPERATURE_LIMIT 
+    global HUMIDITY_LIMIT 
+    global CH4_LIMIT 
+    global SMOKE_LIMIT 
+    global CO_LIMIT 
+    global ACTTION_WINDOW 
   
     print("TESTING SUBSCRIBE" + msg.topic + " " + str(msg.qos))
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
