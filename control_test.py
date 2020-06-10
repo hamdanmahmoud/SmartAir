@@ -34,12 +34,7 @@ duty_cicle_sprinkler=GPIO.PWM(enb,1000)
 duty_cicle_actuator.start(25)
 duty_cicle_sprinkler.start(26)
 
-TEMPERATURE_LIMIT = 30
-HUMIDITY_LIMIT = 30
-CH4_LIMIT = 30
-SMOKE_LIMIT = 30
-CO_LIMIT = 30
-ACTTION_WINDOW = "close_windows"
+
 
 def on_connect(client, userdata, flags, rc):
     if rc==0:
@@ -56,6 +51,7 @@ def on_disconnect(client, userdata, rc):
     client.disconnect_flag=True
 
 def on_message(client, data, msg):
+  
     print("TESTING SUBSCRIBE" + msg.topic + " " + str(msg.qos))
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
     payload = json.loads(msg.payload.decode())
@@ -132,6 +128,13 @@ def on_log(client, data, level, string):
     print("log: " + string)
 
 def main():
+    TEMPERATURE_LIMIT = 30
+    HUMIDITY_LIMIT = 30
+    CH4_LIMIT = 30
+    SMOKE_LIMIT = 30
+    CO_LIMIT = 30
+    ACTTION_WINDOW = "close_windows"
+    
     username = os.environ["USERNAME"]
     password = os.environ["PASSWORD"]
 
@@ -211,7 +214,6 @@ def control_actuator(action):
          GPIO.output(in2,GPIO.HIGH)
          print("backward")
          action='z'
-
 
     elif action=='stop':
         print("stop")
