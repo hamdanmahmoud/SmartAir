@@ -50,6 +50,18 @@ def on_disconnect(client, userdata, rc):
 
 def on_message(client, data, msg):
     print("TESTING SUBSCRIBE" + msg.topic + " " + str(msg.qos))
+#    if (os.path.exists('config.conf')):
+#        f = open("config.conf","a+")
+#        f.write(msg.topic)
+#        message = f.read()
+#        print("Appended msg.topic: " + message)
+#        f.close()
+#    else: 
+#        f = open("config.conf","w+")
+#        f.write(msg.topic)
+#        message = f.read()
+#        print("Written msg.topic: " + message)
+#        f.close()
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
     payload = json.loads(msg.payload.decode())
     if (payload["general"]["temperature"] > 25):
