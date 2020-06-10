@@ -50,7 +50,8 @@ def on_disconnect(client, userdata, rc):
 
 def on_message(client, data, msg):
     print("TESTING SUBSCRIBE" + msg.topic + " " + str(msg.qos))
-    
+    print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
+    payload = json.loads(msg.payload.decode())
     if(payload["message_type"]=="command"):
         if(payload["command"]["type"]=="change_variable"):
             if(payload["command"]["variable"]=="temperature_limit"):
@@ -88,8 +89,7 @@ def on_message(client, data, msg):
         # Reading from json file 
             values_object = json.load(readData) 
 
-    print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
-    payload = json.loads(msg.payload.decode())
+    
     if (payload["general"]["temperature"] > values_object["temperature_limit"]):
         #control_actuator('open')
         print("caz deschide geam")
@@ -111,7 +111,7 @@ def on_message(client, data, msg):
     elif (values_object["action_windows"] == "open_window"):
 #        control_actuator('open')
         print("caz deschide geam")
-    elif (values_object["action_windows"] == close_window"):
+    elif (values_object["action_windows"] == "close_window"):
 #        control_actuator('open')
         print("caz inchide geam")
 
