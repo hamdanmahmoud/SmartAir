@@ -89,12 +89,11 @@ def on_message(client, data, msg):
                     CO_LIMIT = payload["command"]["value"]
             elif(payload["command"]["type"]=="take_action"):
                 ACTTION_WINDOW = payload["command"]["action"]
-    elif(payload["general"]):
-        PRINT("GETTING TEMPERATURE AND HUMIDITY")
+    else:
+        print("GETTING TEMPERATURE AND HUMIDITY")
         SENSE_TEMPERATURE = payload["general"]["temperature"]
         SENSE_HUMIDITY = payload["general"]["humidity"]
-    elif(payload["poisonous"]):
-        PRINT("GETTING CO, SMOKE, CH4")
+        print("GETTING CO, SMOKE, CH4")
         SENSE_CO = payload["poisonous"]["co"]
         SENSE_CH4 = payload["poisonous"]["ch4"]
         SENSE_SMOKE = payload["poisonous"]["smoke"]
