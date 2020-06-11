@@ -67,6 +67,7 @@ def on_message(client, data, msg):
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
     payload = json.loads(msg.payload.decode())
     if(payload["message_type"]):
+        print(payload["message_type"])
         if(payload["message_type"]=="command"):
             if(payload["command"]["type"]=="change_variable"):
                 if(payload["command"]["variable"]=="temperature_limit"):
@@ -112,7 +113,7 @@ def on_message(client, data, msg):
         elif (payload["general"]["temperature"] < values_object["temperature_limit"]):
     #        control_actuator('close')
             print("caz inchide geam")
-            
+
     if(payload["poisonous"]):
         if (payload["poisonous"]["smoke"] > values_object["smoke_limit"]):
     #        control_sprinkler("water")
