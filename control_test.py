@@ -92,6 +92,7 @@ def on_message(client, data, msg):
         "action_windows": ACTTION_WINDOW
     }
     if(os.path.exists("test1.conf")):
+        values_object = json.dumps(control_data, indent=4)
         with open("test1.conf", "w") as writeData:
             writeData.write(values_object)
         with open('test1.conf', 'r') as readData: 
