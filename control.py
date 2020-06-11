@@ -34,6 +34,18 @@ duty_cicle_sprinkler=GPIO.PWM(enb,1000)
 duty_cicle_actuator.start(25)
 duty_cicle_sprinkler.start(26)
 
+TEMPERATURE_LIMIT = 0
+HUMIDITY_LIMIT = 0
+CH4_LIMIT = 0
+SMOKE_LIMIT = 0
+CO_LIMIT = 0
+ACTTION_WINDOW = "close_windows"
+SENSE_TEMPERATURE = 0
+SENSE_HUMIDITY0 = 0
+SENSE_CH4 = 0
+SENSE_CO = 0
+SENSE_SMOKE = 0
+
 def on_connect(client, userdata, flags, rc):
     if rc==0:
         print("Connected OK")
@@ -49,33 +61,96 @@ def on_disconnect(client, userdata, rc):
     client.disconnect_flag=True
 
 def on_message(client, data, msg):
+    global TEMPERATURE_LIMIT 
+    global HUMIDITY_LIMIT 
+    global CH4_LIMIT 
+    global SMOKE_LIMIT 
+    global CO_LIMIT 
+    global ACTTION_WINDOW
+    global SENSE_TEMPERATURE
+    global SENSE_HUMIDITY
+    global SENSE_CH4
+    global SENSE_CO
+    global SENSE_SMOKE
+  
     print("TESTING SUBSCRIBE" + msg.topic + " " + str(msg.qos))
-#    if (os.path.exists('config.conf')):
-#        f = open("config.conf","a+")
-#        f.write(msg.topic)
-#        message = f.read()
-#        print("Appended msg.topic: " + message)
-#        f.close()
-#    else: 
-#        f = open("config.conf","w+")
-#        f.write(msg.topic)
-#        message = f.read()
-#        print("Written msg.topic: " + message)
-#        f.close()
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
     payload = json.loads(msg.payload.decode())
-    if (payload["general"]["temperature"] > 25):
-        #control_actuator('open')
-        print("caz deschide")
-    elif (payload["general"]["temperature"] < 10):
-#        control_actuator('close')
-        print("caz inchide")
-    elif (payload["poisonous"]["smoke"] >15):
-#        control_sprinkler("water")
-        print("uda")
-    elif (payload["poisonous"]["smoke"] <15):
-#        control_sprinkler("stop")
-        print("nimic")
+    if(payload.get("message_type")):
+        print(payload["message_type"])
+        if(payload["message_type"]=="command"):
+            if(payload["command"]["type"]=="change_variable"):
+                if(payload["command"]["variable"]=="temperature_limit"):
+                    TEMPERATURE_LIMIT = payload["command"]["value"]
+                elif (payload["command"]["variable"]=="humidity_limit"): 
+                    HUMIDITY_LIMIT = payload["command"]["value"]
+                elif (payload["command"]["variable"]=="ch4_limit"): 
+                    CH4_LIMIT = payload["command"]["value"]
+                elif (payload["command"]["variable"]=="smoke_limit"): 
+                    SMOKE_LIMIT = payload["command"]["value"]
+                elif (payload["command"]["variable"]=="co_limit"): 
+                    CO_LIMIT = payload["command"]["value"]
+            elif(payload["command"]["type"]=="take_action"):
+                ACTTION_WINDOW = payload["command"]["action"]
+
+        control_data = {
+                "temperature_limit": TEMPERATURE_LIMIT,
+                "humidity_limit": HUMIDITY_LIMIT,
+                "ch4_limit": CH4_LIMIT,
+                "smoke_limit": SMOKE_LIMIT,
+                "co_limit": CO_LIMIT,
+                "action_windows": ACTTION_WINDOW
+        }
+        if(os.path.exists("config.conf")):
+            values_object = json.dumps(control_data, indent=4)
+            with open("config.conf", "w") as writeData:
+                writeData.write(values_object)
+            with open('config.conf', 'r') as readData: 
+        # Reading from json file 
+                values_object = json.load(readData) 
+        else:
+            # Serializing json
+            values_object = json.dumps(control_data, indent=4)
+            # Writing to sample.json
+            with open("config.conf", "w") as writeData:
+                writeData.write(values_object)
+            with open('config.conf', 'r') as readData: 
+            # Reading from json file 
+                values_object = json.load(readData) 
+        if (values_object["action_windows"] == "open_window"):
+            control_actuator('open')
+            print("caz deschide geam")
+        elif (values_object["action_windows"] == "close_window"):
+            control_actuator('open')
+            print("caz inchide geam") 
+
+################################################## PANA AICI MERGE CODUL           
+    else:
+        SENSE_TEMPERATURE = payload["general"]["temperature"]
+        SENSE_HUMIDITY = payload["general"]["humidity"]
+        SENSE_CO = payload["poisonous"]["co"]
+        SENSE_CH4 = payload["poisonous"]["ch4"]
+        SENSE_SMOKE = payload["poisonous"]["smoke"]
+
+        with open('config.conf', 'r') as readData: 
+            values_object = json.load(readData) 
+
+        if (SENSE_TEMPERATURE > values_object["temperature_limit"] and values_object["temperature_limit"] > 0):
+            control_actuator('open')
+            print("TEMPERATURE OVERLIMIT - OPEN WINDOW")
+        if (SENSE_TEMPERATURE < values_object["temperature_limit"] and values_object["temperature_limit"] > 0):
+            control_actuator('close')
+            print("TEMPERATURE UNDERLIMIT - CLOSE WINDOW")
+        if (SENSE_SMOKE > values_object["smoke_limit"] and values_object["smoke_limit"] > 0):
+            control_sprinkler("water")
+            print("SMOKE OVERLIMIT - OPEN WINDOW")
+        if (SENSE_SMOKE < values_object["smoke_limit"] and values_object["smoke_limit"] > 0):
+            control_sprinkler("stop")
+            print("SMOKE OVERLIMIT - STOP SPRINKLER")
+        if (SENSE_CO > values_object["co_limit"] and values_object["co_limit"] > 0):
+            control_actuator('open')
+            print("CO OVERLIMIT - OPEN WINDOW")
+       
 
 def on_publish(client, data, mid):
     print("mid: "+ str(mid))
@@ -167,7 +242,6 @@ def control_actuator(action):
          print("backward")
          action='z'
 
-
     elif action=='stop':
         print("stop")
         GPIO.output(in1,GPIO.LOW)
@@ -224,7 +298,3 @@ def subscribe_to_topics(client):
 
 if __name__ == "__main__":
     main()
-
-
-
-
