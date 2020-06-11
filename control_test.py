@@ -66,8 +66,7 @@ def on_message(client, data, msg):
     print("TESTING SUBSCRIBE" + msg.topic + " " + str(msg.qos))
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
     payload = json.loads(msg.payload.decode())
-    payload1 = json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True) 
-    print(payload1["general"])
+    print(payload["general"]["temperature"])
     if(payload["message_type"]):
         print(payload["message_type"])
         if(payload["message_type"]=="command"):
@@ -116,7 +115,7 @@ def on_message(client, data, msg):
     elif (values_object["action_windows"] == "close_window"):
 #        control_actuator('open')
         print("caz inchide geam")
-
+    print(payload["general"]["temperature"])
     if(payload["general"]):
         if (payload["general"]["temperature"] > values_object["temperature_limit"]):
             #control_actuator('open')
