@@ -133,6 +133,10 @@ def on_message(client, data, msg):
         SENSE_CO = payload["poisonous"]["co"]
         SENSE_CH4 = payload["poisonous"]["ch4"]
         SENSE_SMOKE = payload["poisonous"]["smoke"]
+
+        with open('config.conf', 'r') as readData: 
+        values_object = json.load(readData) 
+        
         if (SENSE_TEMPERATURE > values_object["temperature_limit"]):
                     #control_actuator('open')
             print("caz deschide geam")
