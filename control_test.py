@@ -135,19 +135,19 @@ def on_message(client, data, msg):
         with open('config.conf', 'r') as readData: 
             values_object = json.load(readData) 
 
-        if (SENSE_TEMPERATURE > values_object["temperature_limit"]):
+        if (SENSE_TEMPERATURE > values_object["temperature_limit"] and values_object["temperature_limit"] > 0):
                     #control_actuator('open')
             print("TEMPERATURE OVERLIMIT - OPEN WINDOW")
-        if (SENSE_TEMPERATURE < values_object["temperature_limit"]):
+        if (SENSE_TEMPERATURE < values_object["temperature_limit"] and values_object["temperature_limit"] > 0):
         #       control_actuator('close')
             print("TEMPERATURE UNDERLIMIT - CLOSE WINDOW")
-        if (SENSE_SMOKE > values_object["smoke_limit"]):
+        if (SENSE_SMOKE > values_object["smoke_limit"] and values_object["smoke_limit"] > 0):
         #    control_sprinkler("water")
             print("SMOKE OVERLIMIT - OPEN WINDOW")
-        if (SENSE_SMOKE < values_object["smoke_limit"]):
+        if (SENSE_SMOKE < values_object["smoke_limit"] and values_object["smoke_limit"] > 0):
         #        control_sprinkler("stop")
             print("SMOKE OVERLIMIT - STOP SPRINKLER")
-        if (SENSE_CO> values_object["co_limit"]):
+        if (SENSE_CO > values_object["co_limit"] and values_object["co_limit"] > 0):
         #        control_actuator('open')
             print("CO OVERLIMIT - OPEN WINDOW")
        
