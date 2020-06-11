@@ -66,6 +66,7 @@ def on_message(client, data, msg):
     print("TESTING SUBSCRIBE" + msg.topic + " " + str(msg.qos))
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
     payload = json.loads(msg.payload.decode())
+  
     if(payload["message_type"]):
         print(payload["message_type"])
         if(payload["message_type"]=="command"):
@@ -107,10 +108,11 @@ def on_message(client, data, msg):
         with open('test1.conf', 'r') as readData: 
         # Reading from json file 
             values_object = json.load(readData) 
-
+    print("1"+payload["general"])            
+    print("1"+payload["general"]["temperature"])
     if(payload["general"]):
         print(payload["general"])            
-        print(payload["general"][temperature])
+        print(payload["general"]["temperature"])
 
         if (payload["general"]["temperature"] > values_object["temperature_limit"]):
             #control_actuator('open')
