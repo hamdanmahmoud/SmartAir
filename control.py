@@ -121,7 +121,7 @@ def on_message(client, data, msg):
             control_actuator('open')
             print("caz deschide geam")
         elif (values_object["action_windows"] == "close_window"):
-            control_actuator('open')
+            control_actuator('close')
             print("caz inchide geam") 
 
 ################################################## PANA AICI MERGE CODUL           
@@ -146,7 +146,7 @@ def on_message(client, data, msg):
             print("SMOKE OVERLIMIT - OPEN WINDOW")
         if (SENSE_SMOKE < values_object["smoke_limit"] and values_object["smoke_limit"] > 0):
             control_sprinkler("stop")
-            print("SMOKE OVERLIMIT - STOP SPRINKLER")
+            print("SMOKE UNDERLIMIT - STOP SPRINKLER")
         if (SENSE_CO > values_object["co_limit"] and values_object["co_limit"] > 0):
             control_actuator('open')
             print("CO OVERLIMIT - OPEN WINDOW")
@@ -248,14 +248,14 @@ def control_actuator(action):
         GPIO.output(in2,GPIO.LOW)
         action='z'
 
-    elif action=='close':
+    elif action=='open':
         print("Closing window")
         GPIO.output(in1,GPIO.HIGH)
         GPIO.output(in2,GPIO.LOW)
         temp1=1
         action='z'
 
-    elif action=='open':
+    elif action=='close':
         print("Opening window")
         GPIO.output(in1,GPIO.LOW)
         GPIO.output(in2,GPIO.HIGH)
