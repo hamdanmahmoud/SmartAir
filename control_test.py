@@ -123,7 +123,7 @@ def on_message(client, data, msg):
         elif (values_object["action_windows"] == "close_window"):
 #        control_actuator('open')
             print("caz inchide geam")           
-    elif(payload["general"]):
+    else:
         print("GETTING TEMPERATURE AND HUMIDITY")
         SENSE_TEMPERATURE = payload["general"]["temperature"]
         SENSE_HUMIDITY = payload["general"]["humidity"]
