@@ -61,7 +61,13 @@ def on_message(client, data, msg):
     global CH4_LIMIT 
     global SMOKE_LIMIT 
     global CO_LIMIT 
+    global ACTTION_WINDOW
     global ACTTION_WINDOW 
+    global SENSE_TEMPERATURE
+    global SENSE_HUMIDITY
+    global SENSE_CH4
+    global SENSE_CO
+    global SENSE_SMOKE
   
     print("TESTING SUBSCRIBE" + msg.topic + " " + str(msg.qos))
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
@@ -82,6 +88,15 @@ def on_message(client, data, msg):
                     CO_LIMIT = payload["command"]["value"]
             elif(payload["command"]["type"]=="take_action"):
                 ACTTION_WINDOW = payload["command"]["action"]
+    else:
+        print("GETTING TEMPERATURE AND HUMIDITY")
+        SENSE_TEMPERATURE = payload["general"]["temperature"]
+        SENSE_HUMIDITY = payload["general"]["humidity"]
+        print("GETTING CO, SMOKE, CH4")
+        SENSE_CO = payload["poisonous"]["co"]
+        SENSE_CH4 = payload["poisonous"]["ch4"]
+        SENSE_SMOKE = payload["poisonous"]["smoke"]
+    print("OUTSIDE ELSE " + payload["general"])
 
     control_data = {
         "temperature_limit": TEMPERATURE_LIMIT,
@@ -107,35 +122,35 @@ def on_message(client, data, msg):
         with open('test1.conf', 'r') as readData: 
         # Reading from json file 
             values_object = json.load(readData) 
-
-    if(payload["general"]):
-        if (payload["general"]["temperature"] > values_object["temperature_limit"]):
-            #control_actuator('open')
-            print("caz deschide geam")
-        elif (payload["general"]["temperature"] < values_object["temperature_limit"]):
-    #        control_actuator('close')
-            print("caz inchide geam")
-
-    if(payload["poisonous"]):
-        if (payload["poisonous"]["smoke"] > values_object["smoke_limit"]):
-    #        control_sprinkler("water")
-            print("caz deschide stropitoare")
-        elif (payload["poisonous"]["smoke"] < values_object["smoke_limit"]):
-    #        control_sprinkler("stop")
-            print("caz inchide stropitoare")
-        elif (payload["poisonous"]["co"] > values_object["co_limit"]):
-    #        control_actuator('open')
-            print("caz deschide geam")
-        elif (payload["poisonous"]["co"] > values_object["smoke_limit"]):
-    #        control_actuator('open')
-            print("caz deschide geam")
-
+    
     if (values_object["action_windows"] == "open_window"):
 #        control_actuator('open')
         print("caz deschide geam")
     elif (values_object["action_windows"] == "close_window"):
 #        control_actuator('open')
         print("caz inchide geam")
+
+    if (SENSE_TEMPERATURE > values_object["temperature_limit"]):
+        #control_actuator('open')
+        print("caz deschide geam")
+    elif (SENSE_TEMPERATURE < values_object["temperature_limit"]):
+#       control_actuator('close')
+        print("caz inchide geam")
+
+    if (SENSE_SMOKE > values_object["smoke_limit"]):
+#    control_sprinkler("water")
+            print("caz deschide stropitoare")
+    elif (SENSE_SMOKE < values_object["smoke_limit"]):
+#        control_sprinkler("stop")
+        print("caz inchide stropitoare")
+    elif (SENSE_CO> values_object["co_limit"]):
+#        control_actuator('open')
+        print("caz deschide geam")
+    elif (SENSE_CO > values_object["smoke_limit"]):
+#        control_actuator('open')
+        print("caz deschide geam")
+
+    
 
 def on_publish(client, data, mid):
     print("mid: "+ str(mid))
