@@ -34,12 +34,17 @@ duty_cicle_sprinkler=GPIO.PWM(enb,1000)
 duty_cicle_actuator.start(25)
 duty_cicle_sprinkler.start(26)
 
-TEMPERATURE_LIMIT = 30
-HUMIDITY_LIMIT = 30
-CH4_LIMIT = 30
-SMOKE_LIMIT = 30
-CO_LIMIT = 30
+TEMPERATURE_LIMIT = 0
+HUMIDITY_LIMIT = 0
+CH4_LIMIT = 0
+SMOKE_LIMIT = 0
+CO_LIMIT = 0
 ACTTION_WINDOW = "close_windows"
+SENSE_TEMPERATURE = 0
+SENSE_HUMIDITY0 = 0
+SENSE_CH4 = 0
+SENSE_CO = 0
+SENSE_SMOKE = 0
 
 def on_connect(client, userdata, flags, rc):
     if rc==0:
@@ -62,7 +67,6 @@ def on_message(client, data, msg):
     global SMOKE_LIMIT 
     global CO_LIMIT 
     global ACTTION_WINDOW
-    global ACTTION_WINDOW 
     global SENSE_TEMPERATURE
     global SENSE_HUMIDITY
     global SENSE_CH4
@@ -88,7 +92,7 @@ def on_message(client, data, msg):
                     CO_LIMIT = payload["command"]["value"]
             elif(payload["command"]["type"]=="take_action"):
                 ACTTION_WINDOW = payload["command"]["action"]
-    else:
+    elif(payload["general"]):
         print("GETTING TEMPERATURE AND HUMIDITY")
         SENSE_TEMPERATURE = payload["general"]["temperature"]
         SENSE_HUMIDITY = payload["general"]["humidity"]
