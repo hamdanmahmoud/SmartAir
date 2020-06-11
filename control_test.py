@@ -126,10 +126,8 @@ def on_message(client, data, msg):
 
 ################################################## PANA AICI MERGE CODUL           
     else:
-        print("GETTING TEMPERATURE AND HUMIDITY")
         SENSE_TEMPERATURE = payload["general"]["temperature"]
         SENSE_HUMIDITY = payload["general"]["humidity"]
-        print("GETTING CO, SMOKE, CH4")
         SENSE_CO = payload["poisonous"]["co"]
         SENSE_CH4 = payload["poisonous"]["ch4"]
         SENSE_SMOKE = payload["poisonous"]["smoke"]
@@ -139,22 +137,20 @@ def on_message(client, data, msg):
 
         if (SENSE_TEMPERATURE > values_object["temperature_limit"]):
                     #control_actuator('open')
-            print("caz deschide geam")
+            print("TEMPERATURE OVERLIMIT - OPEN WINDOW")
         elif (SENSE_TEMPERATURE < values_object["temperature_limit"]):
         #       control_actuator('close')
-            print("caz inchide geam")
+            print("TEMPERATURE UNDERLIMIT - CLOSE WINDOW")
         elif (SENSE_SMOKE > values_object["smoke_limit"]):
         #    control_sprinkler("water")
-            print("caz deschide stropitoare")
+            print("SMOKE OVERLIMIT - OPEN WINDOW")
         elif (SENSE_SMOKE < values_object["smoke_limit"]):
         #        control_sprinkler("stop")
-            print("caz inchide stropitoare")
+            print("SMOKE OVERLIMIT - STOP SPRINKLER")
         elif (SENSE_CO> values_object["co_limit"]):
         #        control_actuator('open')
-            print("caz deschide geam")
-        elif (SENSE_CO > values_object["smoke_limit"]):
-        #        control_actuator('open')
-            print("caz deschide geam")
+            print("CO OVERLIMIT - OPEN WINDOW")
+       
 
 def on_publish(client, data, mid):
     print("mid: "+ str(mid))
