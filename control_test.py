@@ -109,6 +109,9 @@ def on_message(client, data, msg):
             values_object = json.load(readData) 
 
     if(payload["general"]):
+        print(payload["general"])            
+        print(payload["general"][temperature])
+
         if (payload["general"]["temperature"] > values_object["temperature_limit"]):
             #control_actuator('open')
             print("caz deschide geam")
