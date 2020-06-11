@@ -92,6 +92,37 @@ def on_message(client, data, msg):
                     CO_LIMIT = payload["command"]["value"]
             elif(payload["command"]["type"]=="take_action"):
                 ACTTION_WINDOW = payload["command"]["action"]
+
+        control_data = {
+                "temperature_limit": TEMPERATURE_LIMIT,
+                "humidity_limit": HUMIDITY_LIMIT,
+                "ch4_limit": CH4_LIMIT,
+                "smoke_limit": SMOKE_LIMIT,
+                "co_limit": CO_LIMIT,
+                "action_windows": ACTTION_WINDOW
+        }
+        if(os.path.exists("test1.conf")):
+            values_object = json.dumps(control_data, indent=4)
+            with open("test1.conf", "w") as writeData:
+                writeData.write(values_object)
+            with open('test1.conf', 'r') as readData: 
+        # Reading from json file 
+                values_object = json.load(readData) 
+        else:
+            # Serializing json
+            values_object = json.dumps(control_data, indent=4)
+            # Writing to sample.json
+            with open("test1.conf", "w") as writeData:
+                writeData.write(values_object)
+            with open('test1.conf', 'r') as readData: 
+            # Reading from json file 
+                values_object = json.load(readData) 
+        if (values_object["action_windows"] == "open_window"):
+#        control_actuator('open')
+            print("caz deschide geam")
+        elif (values_object["action_windows"] == "close_window"):
+#        control_actuator('open')
+            print("caz inchide geam")           
     elif(payload["general"]):
         print("GETTING TEMPERATURE AND HUMIDITY")
         SENSE_TEMPERATURE = payload["general"]["temperature"]
@@ -101,60 +132,24 @@ def on_message(client, data, msg):
         SENSE_CH4 = payload["poisonous"]["ch4"]
         SENSE_SMOKE = payload["poisonous"]["smoke"]
     print("OUTSIDE ELSE " + payload["general"])
-
-    control_data = {
-        "temperature_limit": TEMPERATURE_LIMIT,
-        "humidity_limit": HUMIDITY_LIMIT,
-        "ch4_limit": CH4_LIMIT,
-        "smoke_limit": SMOKE_LIMIT,
-        "co_limit": CO_LIMIT,
-        "action_windows": ACTTION_WINDOW
-    }
-    if(os.path.exists("test1.conf")):
-        values_object = json.dumps(control_data, indent=4)
-        with open("test1.conf", "w") as writeData:
-            writeData.write(values_object)
-        with open('test1.conf', 'r') as readData: 
-    # Reading from json file 
-            values_object = json.load(readData) 
-    else:
-        # Serializing json
-        values_object = json.dumps(control_data, indent=4)
-        # Writing to sample.json
-        with open("test1.conf", "w") as writeData:
-            writeData.write(values_object)
-        with open('test1.conf', 'r') as readData: 
-        # Reading from json file 
-            values_object = json.load(readData) 
-    
-    if (values_object["action_windows"] == "open_window"):
-#        control_actuator('open')
-        print("caz deschide geam")
-    elif (values_object["action_windows"] == "close_window"):
-#        control_actuator('open')
-        print("caz inchide geam")
-
-    if (SENSE_TEMPERATURE > values_object["temperature_limit"]):
-        #control_actuator('open')
-        print("caz deschide geam")
-    elif (SENSE_TEMPERATURE < values_object["temperature_limit"]):
-#       control_actuator('close')
-        print("caz inchide geam")
-
-    if (SENSE_SMOKE > values_object["smoke_limit"]):
-#    control_sprinkler("water")
-            print("caz deschide stropitoare")
-    elif (SENSE_SMOKE < values_object["smoke_limit"]):
-#        control_sprinkler("stop")
-        print("caz inchide stropitoare")
-    elif (SENSE_CO> values_object["co_limit"]):
-#        control_actuator('open')
-        print("caz deschide geam")
-    elif (SENSE_CO > values_object["smoke_limit"]):
-#        control_actuator('open')
-        print("caz deschide geam")
-
-    
+        if (SENSE_TEMPERATURE > values_object["temperature_limit"]):
+            #control_actuator('open')
+            print("caz deschide geam")
+        elif (SENSE_TEMPERATURE < values_object["temperature_limit"]):
+    #       control_actuator('close')
+            print("caz inchide geam")
+        elif (SENSE_SMOKE > values_object["smoke_limit"]):
+    #    control_sprinkler("water")
+                print("caz deschide stropitoare")
+        elif (SENSE_SMOKE < values_object["smoke_limit"]):
+    #        control_sprinkler("stop")
+            print("caz inchide stropitoare")
+        elif (SENSE_CO> values_object["co_limit"]):
+    #        control_actuator('open')
+            print("caz deschide geam")
+        elif (SENSE_CO > values_object["smoke_limit"]):
+    #        control_actuator('open')
+            print("caz deschide geam")
 
 def on_publish(client, data, mid):
     print("mid: "+ str(mid))
