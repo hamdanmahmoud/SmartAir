@@ -118,10 +118,10 @@ def on_message(client, data, msg):
             # Reading from json file 
                 values_object = json.load(readData) 
         if (values_object["action_windows"] == "open_window"):
-            control_actuator('open')
+#        control_actuator('open')
             print("caz deschide geam")
         elif (values_object["action_windows"] == "close_window"):
-            control_actuator('close')
+#        control_actuator('open')
             print("caz inchide geam") 
 
 ################################################## PANA AICI MERGE CODUL           
@@ -136,19 +136,19 @@ def on_message(client, data, msg):
             values_object = json.load(readData) 
 
         if (SENSE_TEMPERATURE > values_object["temperature_limit"] and values_object["temperature_limit"] > 0):
-            control_actuator('open')
+                    #control_actuator('open')
             print("TEMPERATURE OVERLIMIT - OPEN WINDOW")
         if (SENSE_TEMPERATURE < values_object["temperature_limit"] and values_object["temperature_limit"] > 0):
-            control_actuator('close')
+        #       control_actuator('close')
             print("TEMPERATURE UNDERLIMIT - CLOSE WINDOW")
         if (SENSE_SMOKE > values_object["smoke_limit"] and values_object["smoke_limit"] > 0):
-            control_sprinkler("water")
+        #    control_sprinkler("water")
             print("SMOKE OVERLIMIT - OPEN WINDOW")
         if (SENSE_SMOKE < values_object["smoke_limit"] and values_object["smoke_limit"] > 0):
-            control_sprinkler("stop")
-            print("SMOKE UNDERLIMIT - STOP SPRINKLER")
+        #        control_sprinkler("stop")
+            print("SMOKE OVERLIMIT - STOP SPRINKLER")
         if (SENSE_CO > values_object["co_limit"] and values_object["co_limit"] > 0):
-            control_actuator('open')
+        #        control_actuator('open')
             print("CO OVERLIMIT - OPEN WINDOW")
        
 
@@ -248,14 +248,14 @@ def control_actuator(action):
         GPIO.output(in2,GPIO.LOW)
         action='z'
 
-    elif action=='open':
+    elif action=='close':
         print("Closing window")
         GPIO.output(in1,GPIO.HIGH)
         GPIO.output(in2,GPIO.LOW)
         temp1=1
         action='z'
 
-    elif action=='close':
+    elif action=='open':
         print("Opening window")
         GPIO.output(in1,GPIO.LOW)
         GPIO.output(in2,GPIO.HIGH)
