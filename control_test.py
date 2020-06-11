@@ -97,6 +97,7 @@ def on_message(client, data, msg):
         SENSE_CO = payload["poisonous"]["co"]
         SENSE_CH4 = payload["poisonous"]["ch4"]
         SENSE_SMOKE = payload["poisonous"]["smoke"]
+    print("OUTSIDE ELSE " + payload["general"])
 
     control_data = {
         "temperature_limit": TEMPERATURE_LIMIT,
