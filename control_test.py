@@ -122,8 +122,11 @@ def on_message(client, data, msg):
             print("caz deschide geam")
         elif (values_object["action_windows"] == "close_window"):
 #        control_actuator('open')
-            print("caz inchide geam")           
-    else:
+            print("caz inchide geam") 
+
+################################################################################################## PANA AICI MERGE CODUL      
+     
+    if(payload["general"]):
         print("GETTING TEMPERATURE AND HUMIDITY")
         SENSE_TEMPERATURE = payload["general"]["temperature"]
         SENSE_HUMIDITY = payload["general"]["humidity"]
