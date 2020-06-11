@@ -124,9 +124,8 @@ def on_message(client, data, msg):
 #        control_actuator('open')
             print("caz inchide geam") 
 
-################################################################################################## PANA AICI MERGE CODUL      
-     
-    if(payload["general"]):
+################################################## PANA AICI MERGE CODUL           
+    else:
         print("GETTING TEMPERATURE AND HUMIDITY")
         SENSE_TEMPERATURE = payload["general"]["temperature"]
         SENSE_HUMIDITY = payload["general"]["humidity"]
@@ -134,7 +133,6 @@ def on_message(client, data, msg):
         SENSE_CO = payload["poisonous"]["co"]
         SENSE_CH4 = payload["poisonous"]["ch4"]
         SENSE_SMOKE = payload["poisonous"]["smoke"]
-        print("OUTSIDE ELSE " + payload["general"])
         if (SENSE_TEMPERATURE > values_object["temperature_limit"]):
                     #control_actuator('open')
             print("caz deschide geam")
