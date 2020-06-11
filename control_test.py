@@ -77,10 +77,6 @@ def on_message(client, data, msg):
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
     payload = json.loads(msg.payload.decode())
     if(payload.get("message_type")):
-        print("TRUE")
-    else:
-        print("FALSE")
-    if(payload.get("message_type")):
         print(payload["message_type"])
         if(payload["message_type"]=="command"):
             if(payload["command"]["type"]=="change_variable"):
@@ -105,20 +101,20 @@ def on_message(client, data, msg):
                 "co_limit": CO_LIMIT,
                 "action_windows": ACTTION_WINDOW
         }
-        if(os.path.exists("test1.conf")):
+        if(os.path.exists("config.conf")):
             values_object = json.dumps(control_data, indent=4)
-            with open("test1.conf", "w") as writeData:
+            with open("config.conf", "w") as writeData:
                 writeData.write(values_object)
-            with open('test1.conf', 'r') as readData: 
+            with open('config.conf', 'r') as readData: 
         # Reading from json file 
                 values_object = json.load(readData) 
         else:
             # Serializing json
             values_object = json.dumps(control_data, indent=4)
             # Writing to sample.json
-            with open("test1.conf", "w") as writeData:
+            with open("config.conf", "w") as writeData:
                 writeData.write(values_object)
-            with open('test1.conf', 'r') as readData: 
+            with open('config.conf', 'r') as readData: 
             # Reading from json file 
                 values_object = json.load(readData) 
         if (values_object["action_windows"] == "open_window"):
