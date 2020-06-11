@@ -108,12 +108,15 @@ def on_message(client, data, msg):
         with open('test1.conf', 'r') as readData: 
         # Reading from json file 
             values_object = json.load(readData) 
-    print("1"+payload["general"])            
-    print("1"+payload["general"]["temperature"])
-    if(payload["general"]):
-        print(payload["general"])            
-        print(payload["general"]["temperature"])
+            
+    if (values_object["action_windows"] == "open_window"):
+#        control_actuator('open')
+        print("caz deschide geam")
+    elif (values_object["action_windows"] == "close_window"):
+#        control_actuator('open')
+        print("caz inchide geam")
 
+    if(payload["general"]):
         if (payload["general"]["temperature"] > values_object["temperature_limit"]):
             #control_actuator('open')
             print("caz deschide geam")
@@ -135,12 +138,7 @@ def on_message(client, data, msg):
     #        control_actuator('open')
             print("caz deschide geam")
 
-    if (values_object["action_windows"] == "open_window"):
-#        control_actuator('open')
-        print("caz deschide geam")
-    elif (values_object["action_windows"] == "close_window"):
-#        control_actuator('open')
-        print("caz inchide geam")
+
 
 def on_publish(client, data, mid):
     print("mid: "+ str(mid))
