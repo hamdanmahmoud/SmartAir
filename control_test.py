@@ -123,7 +123,7 @@ def on_message(client, data, msg):
         elif (values_object["action_windows"] == "close_window"):
 #        control_actuator('open')
             print("caz inchide geam")           
-    if(payload["general"]):
+    elif(payload["general"]):
         print("GETTING TEMPERATURE AND HUMIDITY")
         SENSE_TEMPERATURE = payload["general"]["temperature"]
         SENSE_HUMIDITY = payload["general"]["humidity"]
@@ -131,25 +131,25 @@ def on_message(client, data, msg):
         SENSE_CO = payload["poisonous"]["co"]
         SENSE_CH4 = payload["poisonous"]["ch4"]
         SENSE_SMOKE = payload["poisonous"]["smoke"]
-    print("OUTSIDE ELSE " + payload["general"])
-    if (SENSE_TEMPERATURE > values_object["temperature_limit"]):
-                #control_actuator('open')
-        print("caz deschide geam")
-    elif (SENSE_TEMPERATURE < values_object["temperature_limit"]):
-    #       control_actuator('close')
-        print("caz inchide geam")
-    elif (SENSE_SMOKE > values_object["smoke_limit"]):
-    #    control_sprinkler("water")
-        print("caz deschide stropitoare")
-    elif (SENSE_SMOKE < values_object["smoke_limit"]):
-    #        control_sprinkler("stop")
-        print("caz inchide stropitoare")
-    elif (SENSE_CO> values_object["co_limit"]):
-    #        control_actuator('open')
-        print("caz deschide geam")
-    elif (SENSE_CO > values_object["smoke_limit"]):
-    #        control_actuator('open')
-        rint("caz deschide geam")
+        print("OUTSIDE ELSE " + payload["general"])
+        if (SENSE_TEMPERATURE > values_object["temperature_limit"]):
+                    #control_actuator('open')
+            print("caz deschide geam")
+        elif (SENSE_TEMPERATURE < values_object["temperature_limit"]):
+        #       control_actuator('close')
+            print("caz inchide geam")
+        elif (SENSE_SMOKE > values_object["smoke_limit"]):
+        #    control_sprinkler("water")
+            print("caz deschide stropitoare")
+        elif (SENSE_SMOKE < values_object["smoke_limit"]):
+        #        control_sprinkler("stop")
+            print("caz inchide stropitoare")
+        elif (SENSE_CO> values_object["co_limit"]):
+        #        control_actuator('open')
+            print("caz deschide geam")
+        elif (SENSE_CO > values_object["smoke_limit"]):
+        #        control_actuator('open')
+            print("caz deschide geam")
 
 def on_publish(client, data, mid):
     print("mid: "+ str(mid))
