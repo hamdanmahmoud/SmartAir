@@ -132,24 +132,24 @@ def on_message(client, data, msg):
         SENSE_CH4 = payload["poisonous"]["ch4"]
         SENSE_SMOKE = payload["poisonous"]["smoke"]
     print("OUTSIDE ELSE " + payload["general"])
-        if (SENSE_TEMPERATURE > values_object["temperature_limit"]):
+    if (SENSE_TEMPERATURE > values_object["temperature_limit"]):
                 #control_actuator('open')
-            print("caz deschide geam")
-        elif (SENSE_TEMPERATURE < values_object["temperature_limit"]):
+        print("caz deschide geam")
+    elif (SENSE_TEMPERATURE < values_object["temperature_limit"]):
     #       control_actuator('close')
-            print("caz inchide geam")
-        elif (SENSE_SMOKE > values_object["smoke_limit"]):
+        print("caz inchide geam")
+    elif (SENSE_SMOKE > values_object["smoke_limit"]):
     #    control_sprinkler("water")
-            print("caz deschide stropitoare")
-        elif (SENSE_SMOKE < values_object["smoke_limit"]):
+        print("caz deschide stropitoare")
+    elif (SENSE_SMOKE < values_object["smoke_limit"]):
     #        control_sprinkler("stop")
-            print("caz inchide stropitoare")
-        elif (SENSE_CO> values_object["co_limit"]):
+        print("caz inchide stropitoare")
+    elif (SENSE_CO> values_object["co_limit"]):
     #        control_actuator('open')
-            print("caz deschide geam")
-        elif (SENSE_CO > values_object["smoke_limit"]):
+        print("caz deschide geam")
+    elif (SENSE_CO > values_object["smoke_limit"]):
     #        control_actuator('open')
-            print("caz deschide geam")
+        rint("caz deschide geam")
 
 def on_publish(client, data, mid):
     print("mid: "+ str(mid))
