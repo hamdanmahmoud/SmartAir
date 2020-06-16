@@ -67,13 +67,8 @@ def control_log(client, data, level, string):
 def control_subscribe(client, data, mid, granted_qos):
     print("Subscribed: "+ str(mid) + " " + str(granted_qos))
 
-def login ():
-    print("Please provide your Control Device credentials in order to continue!")
-    print("********************************************************************")
 
-    username = input("Username:")
-    password = getpass("Password:")
-
+   
 def control_message(client, data, msg):
     global TEMPERATURE_LIMIT 
     global HUMIDITY_LIMIT 
@@ -166,7 +161,12 @@ def control_message(client, data, msg):
 
     
 def main():
-    login()
+
+    print("Please provide your Control Device credentials in order to continue!")
+    print("********************************************************************")
+
+    username = input("Username:")
+    password = getpass("Password:")
 
     client = paho.Client(client_id=username)        
     client.username_pw_set(username=username,password=password)                  
