@@ -182,7 +182,6 @@ def main():
     client.loop_start()
 
     print("Connecting... ")
-    
     try:
         client.connect(broker,port)
     except:
@@ -192,8 +191,8 @@ def main():
     while not client.connected_flag and not client.bad_connection_flag:
         print("Connecting to broker...")
         time.sleep(1)
+    if client.bad_connection_flag: #
 
-    if client.bad_connection_flag: 
         client.loop_stop()
         sys.exit()
 
