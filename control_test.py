@@ -167,8 +167,6 @@ def control_message(client, data, msg):
     
 def main():
     login()
-    username = os.environ["USERNAME"]
-    password = os.environ["PASSWORD"]
 
     client = paho.Client(client_id=username)        
     client.username_pw_set(username=username,password=password)                  
