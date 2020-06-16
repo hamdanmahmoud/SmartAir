@@ -176,6 +176,7 @@ def control_message(client, data, msg):
 
     
 def main():
+    login()
     client = paho.Client(client_id=username)        
     client.username_pw_set(username=username,password=password)                  
     client.connected_flag=False
@@ -302,4 +303,5 @@ def subscribe(client):
         client.subscribe(devices_topic + device, 0)
 
 if __name__ == "__main__":
+
     main()
