@@ -51,7 +51,7 @@ def control_connect(client, userdata, flags, rc):
     if rc==0:
         print("Connected OK")
         client.connected_flag=True #set flag
-        subscribe_to_topics(client)
+        subscribe(client)
     else:
         print("Bad connection Returned code=",rc)
         client.bad_connection_flag=True
