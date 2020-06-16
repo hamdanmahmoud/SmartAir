@@ -165,7 +165,7 @@ def control_message(client, data, msg):
 
     
 def main():
-    
+    login()
     username = os.environ["USERNAME"]
     password = os.environ["PASSWORD"]
 
