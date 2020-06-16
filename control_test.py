@@ -46,21 +46,34 @@ SENSE_CH4 = 0
 SENSE_CO = 0
 SENSE_SMOKE = 0
 
-def on_connect(client, userdata, flags, rc):
-    if rc==0:
-        print("Connected OK")
-        client.connected_flag=True #set flag
-        subscribe_to_topics(client)
+def control_connect(client, userdata, flags, rc):
+    if rc !=0:
+        print("Unexpected disconnection! Returned code: ",rc)
     else:
-        print("Bad connection Returned code=",rc)
-        client.bad_connection_flag=True
+        print("Successfully connected! Returned code:" +rc)
+        client.connected_flag = True 
+        subscribe(client)
+ 
 
-def on_disconnect(client, userdata, rc):
+def control_disconnect(client, userdata, rc):
     print("Disconnecting reason "  + str(rc))
     client.connected_flag=False
     client.disconnect_flag=True
+    
+def control_log(client, data, level, string):
+    print("log: " + string)
 
-def on_message(client, data, msg):
+def control_subscribe(client, data, mid, granted_qos):
+    print("Subscribed: "+ str(mid) + " " + str(granted_qos))
+
+def login ():
+    print("Please provide your Control Device credentials in order to continue!")
+    print("********************************************************************")
+
+    username = input("Username:")
+    password = getpass("Password:")
+
+def control_message(client, data, msg):
     global TEMPERATURE_LIMIT 
     global HUMIDITY_LIMIT 
     global CH4_LIMIT 
@@ -118,13 +131,12 @@ def on_message(client, data, msg):
             # Reading from json file 
                 values_object = json.load(readData) 
         if (values_object["action_windows"] == "open_window"):
-#        control_actuator('open')
+            control_actuator('open')
             print("caz deschide geam")
         elif (values_object["action_windows"] == "close_window"):
-#        control_actuator('open')
+            control_actuator('open')
             print("caz inchide geam") 
 
-################################################## PANA AICI MERGE CODUL           
     else:
         SENSE_TEMPERATURE = payload["general"]["temperature"]
         SENSE_HUMIDITY = payload["general"]["humidity"]
@@ -136,64 +148,52 @@ def on_message(client, data, msg):
             values_object = json.load(readData) 
 
         if (SENSE_TEMPERATURE > values_object["temperature_limit"] and values_object["temperature_limit"] > 0):
-                    #control_actuator('open')
+            control_actuator('open')
             print("TEMPERATURE OVERLIMIT - OPEN WINDOW")
         if (SENSE_TEMPERATURE < values_object["temperature_limit"] and values_object["temperature_limit"] > 0):
-        #       control_actuator('close')
+            control_actuator('close')
             print("TEMPERATURE UNDERLIMIT - CLOSE WINDOW")
         if (SENSE_SMOKE > values_object["smoke_limit"] and values_object["smoke_limit"] > 0):
-        #    control_sprinkler("water")
+            control_sprinkler("water")
             print("SMOKE OVERLIMIT - OPEN WINDOW")
         if (SENSE_SMOKE < values_object["smoke_limit"] and values_object["smoke_limit"] > 0):
-        #        control_sprinkler("stop")
+            control_sprinkler("stop")
             print("SMOKE OVERLIMIT - STOP SPRINKLER")
         if (SENSE_CO > values_object["co_limit"] and values_object["co_limit"] > 0):
-        #        control_actuator('open')
+            control_actuator('open')
             print("CO OVERLIMIT - OPEN WINDOW")
-       
 
-def on_publish(client, data, mid):
-    print("mid: "+ str(mid))
-
-def on_subscribe(client, data, mid, granted_qos):
-    print("Subscribed: "+ str(mid) + " " + str(granted_qos))
-
-def on_log(client, data, level, string):
-    print("log: " + string)
-
+    
 def main():
+    
     username = os.environ["USERNAME"]
     password = os.environ["PASSWORD"]
-
-    print("Control...")
 
     client = paho.Client(client_id=username)        
     client.username_pw_set(username=username,password=password)                  
     client.connected_flag=False
     client.bad_connection_flag=False
+    client.on_connect = control_connect
+    client.on_disconnect = control_disconnect
+    client.on_log = control_log
+    client.on_message = control_message
+    client.on_subscribe = control_subscribe
 
-    client.on_connect = on_connect
-    client.on_disconnect = on_disconnect
-    client.on_message = on_message
-    client.on_publish = on_publish
-    client.on_subscribe = on_subscribe
-    client.on_log = on_log
-
-    # thread triggers callbacks based on received messages
     client.loop_start()
 
-    print("Connecting to broker",broker)
+    print("Connecting... ")
+    
     try:
         client.connect(broker,port)
     except:
         print("Connection failed")
         exit(1) # Should quit or raise flag to quit or retry
 
-    while not client.connected_flag: # waiting for CONNACK
-        print("Waiting for CONNACK...")
+    while not client.connected_flag and not client.bad_connection_flag:
+        print("Connecting to broker...")
         time.sleep(1)
 
-    if client.bad_connection_flag: # established a connection but it's not OK
+    if client.bad_connection_flag: 
         client.loop_stop()
         sys.exit()
 
@@ -281,7 +281,7 @@ def control_actuator(action):
         GPIO.cleanup()
         print("Unfortunately, an error has occured")
         
-def subscribe_to_topics(client):
+def subscribe(client):
     owners_topic = "users/"
     devices_topic = "devices/"
 
