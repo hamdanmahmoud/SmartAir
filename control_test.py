@@ -47,7 +47,7 @@ SENSE_CH4 = 0
 SENSE_CO = 0
 SENSE_SMOKE = 0
 
-def on_connect(client, userdata, flags, rc):
+def control_connect(client, userdata, flags, rc):
     if rc !=0:
         print("Unexpected disconnection! Returned code: ",rc)
     else:
@@ -56,20 +56,20 @@ def on_connect(client, userdata, flags, rc):
         subscribe(client)
  
 
-def on_disconnect(client, userdata, rc):
+def control_disconnect(client, userdata, rc):
     print("Disconnecting reason "  + str(rc))
     client.connected_flag=False
     client.disconnect_flag=True
     
-def on_log(client, data, level, string):
+def control_log(client, data, level, string):
     print("log: " + string)
 
-def on_subscribe(client, data, mid, granted_qos):
+def control_subscribe(client, data, mid, granted_qos):
     print("Subscribed: "+ str(mid) + " " + str(granted_qos))
 
 
    
-def on_message(client, data, msg):
+def control_message(client, data, msg):
     global TEMPERATURE_LIMIT 
     global HUMIDITY_LIMIT 
     global CH4_LIMIT 
@@ -165,18 +165,18 @@ def main():
     print("Please provide your Control Device credentials in order to continue!")
     print("********************************************************************")
 
-    username = input("Username:")
-    password = getpass("Password:")
+    username = str(input("Username:"))
+    password = str(getpass("Password:"))
 
     client = paho.Client(client_id=username)        
     client.username_pw_set(username=username,password=password)                  
     client.connected_flag=False
     client.bad_connection_flag=False
-    client.on_connect = on_connect
-    client.on_disconnect = on_disconnect
-    client.on_log = on_log
-    client.on_message = on_message
-    client.on_subscribe = on_subscribe
+    client.on_connect = control_connect
+    client.on_disconnect = control_disconnect
+    client.on_log = control_log
+    client.on_message = control_message
+    client.on_subscribe = control_subscribe
 
     client.loop_start()
 
