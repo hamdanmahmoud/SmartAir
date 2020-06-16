@@ -69,7 +69,19 @@ def control_subscribe(client, data, mid, granted_qos):
     print("Subscribed: "+ str(mid) + " " + str(granted_qos))
 
 
-   
+def login():
+    print("********************************************************************")
+    print("Please provide your Control Device credentials in order to continue!")
+    print("********************************************************************")
+
+    username = input("Username:")
+    password = getpass("Password:")
+    owner = input("Owner username:")
+    sense_devices = input(
+            "Associated sense devices (separated by spaces):")
+    return username, password, owner, sense_devices
+    
+    
 def control_message(client, data, msg):
     global TEMPERATURE_LIMIT 
     global HUMIDITY_LIMIT 
@@ -162,15 +174,7 @@ def control_message(client, data, msg):
 
     
 def main():
-    print("********************************************************************")
-    print("Please provide your Control Device credentials in order to continue!")
-    print("********************************************************************")
-
-    username = input("Username:")
-    password = getpass("Password:")
-    owner = input("Owner username:")
-    sense_devices = input(
-            "Associated sense devices (separated by spaces):")
+    username, password = login()
     client = paho.Client(client_id=username)        
     client.username_pw_set(username=username,password=password)                  
     client.connected_flag=False
@@ -285,7 +289,7 @@ def control_actuator(action):
 def subscribe(client):
     owners_topic = "users/"
     devices_topic = "devices/"
-
+    username, owner, sense_devices = login()
     #username = username
     client.subscribe(devices_topic + username, 0)
 
