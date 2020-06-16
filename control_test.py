@@ -295,11 +295,11 @@ def subscribe(client):
     client.subscribe(devices_topic + username, 0)
 
     #owner = owner
-    sense_devices = sense_devices.split(" ")
+    #sense_devices = sense_devices.split(" ")
 
     client.subscribe(owners_topic + owner, 0)
 
-    for device in sense_devices:
+    for device in sense_devices.split(" "):
         client.subscribe(devices_topic + device, 0)
 
 if __name__ == "__main__":
