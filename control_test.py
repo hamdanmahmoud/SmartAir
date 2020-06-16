@@ -168,7 +168,9 @@ def main():
 
     username = input("Username:")
     password = getpass("Password:")
-
+    owner = input("Owner username:")
+    sense_devices = input(
+            "Associated sense devices (separated by spaces):")
     client = paho.Client(client_id=username)        
     client.username_pw_set(username=username,password=password)                  
     client.connected_flag=False
@@ -287,8 +289,8 @@ def subscribe(client):
     username = os.environ["USERNAME"]
     client.subscribe(devices_topic + username, 0)
 
-    owner = os.environ["OWNER"]
-    sense_devices = os.environ["SENSE"].split(" ")
+    owner = owner
+    sense_devices = sense_devices.split(" ")
 
     client.subscribe(owners_topic + owner, 0)
 
