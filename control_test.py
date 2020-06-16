@@ -48,12 +48,13 @@ SENSE_CO = 0
 SENSE_SMOKE = 0
 
 def control_connect(client, userdata, flags, rc):
-    if rc !=0:
-        print("Unexpected disconnection! Returned code: ",rc)
+    if rc==0:
+        print("Connected OK")
+        client.connected_flag=True #set flag
+        subscribe_to_topics(client)
     else:
-        print("Successfully connected! Returned code:" +rc)
-        client.connected_flag = True 
-        subscribe(client)
+        print("Bad connection Returned code=",rc)
+        client.bad_connection_flag=True
  
 
 def control_disconnect(client, userdata, rc):
@@ -169,7 +170,7 @@ def main():
     password = getpass("Password:")
 
     client = paho.Client(client_id=username)        
-    client.username_pw_set(username=str(username),password=str(password))                 
+    client.username_pw_set(username=username,password=password)                  
     client.connected_flag=False
     client.bad_connection_flag=False
     client.on_connect = control_connect
