@@ -73,13 +73,15 @@ def login():
     print("********************************************************************")
     print("Please provide your Control Device credentials in order to continue!")
     print("********************************************************************")
-
+    global username
+    global password
+    global owner
+    global sense_devices
     username = input("Username:")
     password = getpass("Password:")
     owner = input("Owner username:")
     sense_devices = input(
             "Associated sense devices (separated by spaces):")
-    return username, password, owner, sense_devices
     
     
 def control_message(client, data, msg):
@@ -174,7 +176,6 @@ def control_message(client, data, msg):
 
     
 def main():
-    username, password = login()
     client = paho.Client(client_id=username)        
     client.username_pw_set(username=username,password=password)                  
     client.connected_flag=False
@@ -289,7 +290,6 @@ def control_actuator(action):
 def subscribe(client):
     owners_topic = "users/"
     devices_topic = "devices/"
-    username, owner, sense_devices = login()
     #username = username
     client.subscribe(devices_topic + username, 0)
 
