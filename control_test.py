@@ -169,7 +169,7 @@ def main():
     password = getpass("Password:")
 
     client = paho.Client(client_id=username)        
-    client.username_pw_set(username=str(username),str(password=password))                  
+    client.username_pw_set(username=str(username),password=str(password))                 
     client.connected_flag=False
     client.bad_connection_flag=False
     client.on_connect = control_connect
