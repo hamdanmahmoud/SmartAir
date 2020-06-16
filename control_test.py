@@ -286,10 +286,10 @@ def subscribe(client):
     owners_topic = "users/"
     devices_topic = "devices/"
 
-    username = os.environ["USERNAME"]
+    #username = username
     client.subscribe(devices_topic + username, 0)
 
-    owner = owner
+    #owner = owner
     sense_devices = sense_devices.split(" ")
 
     client.subscribe(owners_topic + owner, 0)
