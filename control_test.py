@@ -48,17 +48,17 @@ SENSE_CO = 0
 SENSE_SMOKE = 0
 
 def control_connect(client, userdata, flags, rc):
-    if rc==0:
-        print("Connected OK")
-        client.connected_flag=True #set flag
-        subscribe(client)
-    else:
-        print("Bad connection Returned code=",rc)
+    if rc!=0:
+        print("Bad connection! Returned code =",rc)
         client.bad_connection_flag=True
+    else:
+        print("Connected successfully")
+        client.connected_flag=True #setting flag
+        subscribe(client)
  
 
 def control_disconnect(client, userdata, rc):
-    print("Disconnecting reason "  + str(rc))
+    print("Disconnecting reason: "  + str(rc))
     client.connected_flag=False
     client.disconnect_flag=True
     
@@ -71,16 +71,19 @@ def control_subscribe(client, data, mid, granted_qos):
 
 def login():
     print("********************************************************************")
-    print("Please provide your Control Device credentials in order to continue!")
     print("********************************************************************")
+    print("Please provide your SmartAir control device credentials to continue!")
+    print("********************************************************************")
+    print("********************************************************************")
+
     global username
     global password
     global owner
-    global sense_devices
+    global sensors
     username = input("Username:")
     password = getpass("Password:")
     owner = input("Owner username:")
-    sense_devices = input(
+    sensors = input(
             "Associated sense devices (separated by spaces):")
     
     
@@ -145,7 +148,7 @@ def control_message(client, data, msg):
             control_actuator('open')
             print("caz deschide geam")
         elif (values_object["action_windows"] == "close_window"):
-            control_actuator('open')
+            control_actuator('close')
             print("caz inchide geam") 
 
     else:
@@ -192,15 +195,15 @@ def main():
     print("Connecting... ")
     try:
         client.connect(broker,port)
+        
     except:
         print("Connection failed")
-        exit(1) # Should quit or raise flag to quit or retry
+        exit(1) #retry
 
     while not client.connected_flag and not client.bad_connection_flag:
         print("Connecting to broker...")
         time.sleep(1)
-    if client.bad_connection_flag: #
-
+    if client.bad_connection_flag: 
         client.loop_stop()
         sys.exit()
 
@@ -255,14 +258,14 @@ def control_actuator(action):
         GPIO.output(in2,GPIO.LOW)
         action='z'
 
-    elif action=='close':
+    elif action=='open':
         print("Closing window")
         GPIO.output(in1,GPIO.HIGH)
         GPIO.output(in2,GPIO.LOW)
         temp1=1
         action='z'
 
-    elif action=='open':
+    elif action=='close':
         print("Opening window")
         GPIO.output(in1,GPIO.LOW)
         GPIO.output(in2,GPIO.HIGH)
@@ -291,15 +294,11 @@ def control_actuator(action):
 def subscribe(client):
     owners_topic = "users/"
     devices_topic = "devices/"
-    #username = username
     client.subscribe(devices_topic + username, 0)
-
-    #owner = owner
-    #sense_devices = sense_devices.split(" ")
 
     client.subscribe(owners_topic + owner, 0)
 
-    for device in sense_devices.split(" "):
+    for device in sensors.split(" "):
         client.subscribe(devices_topic + device, 0)
 
 if __name__ == "__main__":
