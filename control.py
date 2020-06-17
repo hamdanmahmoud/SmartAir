@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 broker = "167.71.34.169"
-port = 1883
+port = 9001
 sleep_time = 10
 in1 = 24
 in2 = 23
@@ -180,7 +180,7 @@ def control_message(client, data, msg):
     
 def main():
     login()
-    client = paho.Client(client_id=username)        
+    client = paho.Client(client_id=username, transport = "websockets")        
     client.username_pw_set(username=username,password=password)                  
     client.connected_flag=False
     client.bad_connection_flag=False
