@@ -20,7 +20,7 @@ LANGUAGE = "en"
 # LANGUAGE = "fr"
 
 SMOKE_LIMIT = 100
-GAS_LIMIT = 100
+GAS_LIMIT = 5
 CO_LIMIT = 100
 
 RL_VALUE = 5
@@ -258,7 +258,7 @@ def play_sound(action):
     call(["aplay", get_path_from_action(action)])
 
 
-def warn_if_necessary(data):
+def warn_if_necessary(data, redButton, blueButton, yellowButton):
     co = data["poisonous"]["co"]
     smoke = data["poisonous"]["smoke"]
     gas = data["poisonous"]["ch4"]
@@ -268,18 +268,24 @@ def warn_if_necessary(data):
         play_sound("attention")
         play_sound("smoke")
         play_sound("closing_windows")
+        redButton.led.blink()
     elif (co > CO_LIMIT):
         play_sound("attention")
         play_sound("co")
         play_sound("opening_windows")
+        blueButton.led.blink()
     elif (gas > GAS_LIMIT):
         play_sound("attention")
         play_sound("gas")
         play_sound("opening_windows")
+        yellowButton.led.blink()
     if (vibration == True):
         play_sound("attention")
         play_sound("earthquake")
         play_sound("cover_yourself")
+        redButton.led.blink()
+        blueButton.led.blink()
+        yellowButton.led.blink()
 
 
 def on_connect(client, userdata, flags, rc):
@@ -390,7 +396,7 @@ def main():
             }
         }
 
-        warn_if_necessary(simplejson.loads(simplejson.dumps(data)))
+        warn_if_necessary(simplejson.loads(simplejson.dumps(data)), redButton, blueButton, yellowButton)
 
         ret = client.publish(topic, simplejson.dumps(data), 2)
         time.sleep(sleep_time)
