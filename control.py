@@ -145,13 +145,7 @@ def control_message(client, data, msg):
             with open('config.conf', 'r') as readData:
                 # Reading from json file
                 values_object = json.load(readData)
-              """   publish_data = {
-                "default_temperature": values_object["temperature_limit"],
-                "default_humidity": values_object["humidity_limit"],
-                "default_ch4": values_object["ch4_limit"],
-                "default_smoke": values_object["smoke_limit"],
-                "default_co": values_object["temperature_limit"]
-            } """
+
             
         else:
             # Serializing json
