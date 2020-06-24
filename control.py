@@ -4,7 +4,7 @@ import sys
 import os
 from getpass import getpass
 import json
-import RPi.GPIO as GPIO          
+import RPi.GPIO as GPIO
 from time import sleep
 
 broker = "167.71.34.169"
@@ -16,22 +16,22 @@ in3 = 17
 in4 = 27
 ena = 25
 enb = 26
-temp1=1
+temp1 = 1
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(in1,GPIO.OUT)
-GPIO.setup(in2,GPIO.OUT)
-GPIO.setup(in3,GPIO.OUT)
-GPIO.setup(in4,GPIO.OUT)
-GPIO.setup(ena,GPIO.OUT)
-GPIO.setup(enb,GPIO.OUT)
+GPIO.setup(in1, GPIO.OUT)
+GPIO.setup(in2, GPIO.OUT)
+GPIO.setup(in3, GPIO.OUT)
+GPIO.setup(in4, GPIO.OUT)
+GPIO.setup(ena, GPIO.OUT)
+GPIO.setup(enb, GPIO.OUT)
 
-GPIO.output(in1,GPIO.LOW)
-GPIO.output(in2,GPIO.LOW)
-GPIO.output(in3,GPIO.LOW)
-GPIO.output(in4,GPIO.LOW)
-duty_cicle_actuator=GPIO.PWM(ena,1000)
-duty_cicle_sprinkler=GPIO.PWM(enb,1000)
+GPIO.output(in1, GPIO.LOW)
+GPIO.output(in2, GPIO.LOW)
+GPIO.output(in3, GPIO.LOW)
+GPIO.output(in4, GPIO.LOW)
+duty_cicle_actuator = GPIO.PWM(ena, 1000)
+duty_cicle_sprinkler = GPIO.PWM(enb, 1000)
 duty_cicle_actuator.start(25)
 duty_cicle_sprinkler.start(26)
 
@@ -47,26 +47,33 @@ SENSE_CH4 = 0
 SENSE_CO = 0
 SENSE_SMOKE = 0
 
+
 def control_connect(client, userdata, flags, rc):
-    if rc!=0:
-        print("Bad connection! Returned code =",rc)
-        client.bad_connection_flag=True
+    if rc != 0:
+        print("Bad connection! Returned code =", rc)
+        client.bad_connection_flag = True
     else:
         print("Connected successfully")
-        client.connected_flag=True #setting flag
+        client.connected_flag = True  # setting flag
         subscribe(client)
- 
+
 
 def control_disconnect(client, userdata, rc):
-    print("Disconnecting reason: "  + str(rc))
-    client.connected_flag=False
-    client.disconnect_flag=True
-    
+    print("Disconnecting reason: " + str(rc))
+    client.connected_flag = False
+    client.disconnect_flag = True
+
+
 def control_log(client, data, level, string):
     print("log: " + string)
 
+
 def control_subscribe(client, data, mid, granted_qos):
-    print("Subscribed: "+ str(mid) + " " + str(granted_qos))
+    print("Subscribed: " + str(mid) + " " + str(granted_qos))
+
+
+def control_publish(client, userdata, mid):
+    print("mid: "+str(mid))
 
 
 def login():
@@ -84,72 +91,72 @@ def login():
     password = getpass("Password:")
     owner = input("Owner username:")
     sensors = input(
-            "Associated sense devices (separated by spaces):")
-    
-    
+        "Associated sense devices (separated by spaces):")
+
+
 def control_message(client, data, msg):
-    global TEMPERATURE_LIMIT 
-    global HUMIDITY_LIMIT 
-    global CH4_LIMIT 
-    global SMOKE_LIMIT 
-    global CO_LIMIT 
+    global TEMPERATURE_LIMIT
+    global HUMIDITY_LIMIT
+    global CH4_LIMIT
+    global SMOKE_LIMIT
+    global CO_LIMIT
     global ACTTION_WINDOW
     global SENSE_TEMPERATURE
     global SENSE_HUMIDITY
     global SENSE_CH4
     global SENSE_CO
     global SENSE_SMOKE
-  
+
     print("Subscribing: " + msg.topic + " " + str(msg.qos))
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
     payload = json.loads(msg.payload.decode())
     if(payload.get("message_type")):
         print(payload["message_type"])
-        if(payload["message_type"]=="command"):
-            if(payload["command"]["type"]=="change_variable"):
-                if(payload["command"]["variable"]=="temperature_limit"):
+        if(payload["message_type"] == "command"):
+            if(payload["command"]["type"] == "change_variable"):
+                if(payload["command"]["variable"] == "temperature_limit"):
                     TEMPERATURE_LIMIT = payload["command"]["value"]
-                elif (payload["command"]["variable"]=="humidity_limit"): 
+                elif (payload["command"]["variable"] == "humidity_limit"):
                     HUMIDITY_LIMIT = payload["command"]["value"]
-                elif (payload["command"]["variable"]=="ch4_limit"): 
+                elif (payload["command"]["variable"] == "ch4_limit"):
                     CH4_LIMIT = payload["command"]["value"]
-                elif (payload["command"]["variable"]=="smoke_limit"): 
+                elif (payload["command"]["variable"] == "smoke_limit"):
                     SMOKE_LIMIT = payload["command"]["value"]
-                elif (payload["command"]["variable"]=="co_limit"): 
+                elif (payload["command"]["variable"] == "co_limit"):
                     CO_LIMIT = payload["command"]["value"]
-            elif(payload["command"]["type"]=="take_action"):
+            elif(payload["command"]["type"] == "take_action"):
                 ACTTION_WINDOW = payload["command"]["action"]
 
         control_data = {
-                "temperature_limit": TEMPERATURE_LIMIT,
-                "humidity_limit": HUMIDITY_LIMIT,
-                "ch4_limit": CH4_LIMIT,
-                "smoke_limit": SMOKE_LIMIT,
-                "co_limit": CO_LIMIT,
-                "action_windows": ACTTION_WINDOW
+            "temperature_limit": TEMPERATURE_LIMIT,
+            "humidity_limit": HUMIDITY_LIMIT,
+            "ch4_limit": CH4_LIMIT,
+            "smoke_limit": SMOKE_LIMIT,
+            "co_limit": CO_LIMIT,
+            "action_windows": ACTTION_WINDOW
         }
         if(os.path.exists("config.conf")):
             values_object = json.dumps(control_data, indent=4)
             with open("config.conf", "w") as writeData:
                 writeData.write(values_object)
-            with open('config.conf', 'r') as readData: 
-        # Reading from json file 
-                values_object = json.load(readData) 
+            with open('config.conf', 'r') as readData:
+                # Reading from json file
+                values_object = json.load(readData)
         else:
             # Serializing json
             values_object = json.dumps(control_data, indent=4)
             # Writing to sample.json
             with open("config.conf", "w") as writeData:
                 writeData.write(values_object)
-            with open('config.conf', 'r') as readData: 
-            # Reading from json file 
-                values_object = json.load(readData) 
+            with open('config.conf', 'r') as readData:
+                # Reading from json file
+                values_object = json.load(readData)
         if (values_object["action_windows"] == "open_window"):
             control_actuator('open')
             print("caz deschide geam")
         elif (values_object["action_windows"] == "close_window"):
             control_actuator('close')
-            print("caz inchide geam") 
+            print("caz inchide geam")
 
     else:
         SENSE_TEMPERATURE = payload["general"]["temperature"]
@@ -158,8 +165,8 @@ def control_message(client, data, msg):
         SENSE_CH4 = payload["poisonous"]["ch4"]
         SENSE_SMOKE = payload["poisonous"]["smoke"]
 
-        with open('config.conf', 'r') as readData: 
-            values_object = json.load(readData) 
+        with open('config.conf', 'r') as readData:
+            values_object = json.load(readData)
 
         if (SENSE_TEMPERATURE > values_object["temperature_limit"] and values_object["temperature_limit"] > 0):
             control_actuator('open')
@@ -177,49 +184,63 @@ def control_message(client, data, msg):
             control_actuator('open')
             print("CO OVERLIMIT - OPEN WINDOW")
 
-    
+
 def main():
     login()
-    client = paho.Client(client_id=username, transport = "websockets")        
-    client.username_pw_set(username=username,password=password)                  
-    client.connected_flag=False
-    client.bad_connection_flag=False
+    client = paho.Client(client_id=username, transport="websockets")
+    client.username_pw_set(username=username, password=password)
+    client.connected_flag = False
+    client.bad_connection_flag = False
     client.on_connect = control_connect
     client.on_disconnect = control_disconnect
     client.on_log = control_log
     client.on_message = control_message
     client.on_subscribe = control_subscribe
-
+    client.on_publish = control_publish
+    publish_topic = "devices/" + username + "/response"
     client.loop_start()
 
     print("Connecting... ")
     try:
-        client.connect(broker,port)
-        
+        client.connect(broker, port)
+
     except:
         print("Connection failed")
-        exit(1) #retry
+        exit(1)  # retry
 
     while not client.connected_flag and not client.bad_connection_flag:
         print("Connecting to broker...")
         time.sleep(1)
-    if client.bad_connection_flag: 
+    if client.bad_connection_flag:
         client.loop_stop()
         sys.exit()
 
     while True:
+        with open('config.conf', 'r') as readData:
+            # Reading from json file
+            values_object = json.load(readData)
+            publish_data = {
+                "default_temperature": values_object["temperature_limit"],
+                "default_humidity": values_object["humidity_limit"],
+                "default_ch4": values_object["ch4_limit"],
+                "default_smoke": values_object["smoke_limit"],
+                "default_co": values_object["temperature_limit"]
+            }
+        response = client.publish(publish_topic, simplejson.dumps(publish_data), 2)
+
         time.sleep(sleep_time)
         pass
-        
+
+
 def control_sprinkler(action):
-    if action =='water':
-        GPIO.output(in3,GPIO.HIGH)
-        GPIO.output(in4,GPIO.LOW)
+    if action == 'water':
+        GPIO.output(in3, GPIO.HIGH)
+        GPIO.output(in4, GPIO.LOW)
         print("Sprinkler is now watering the area")
         action = 'z'
-    elif action =='stop':
-        GPIO.output(in3,GPIO.LOW)
-        GPIO.output(in4,GPIO.LOW)
+    elif action == 'stop':
+        GPIO.output(in3, GPIO.LOW)
+        GPIO.output(in4, GPIO.LOW)
         print("Sprinkler has stopped watering the area")
         action = 'z'
     elif action == "fast":
@@ -237,60 +258,62 @@ def control_sprinkler(action):
     else:
         GPIO.cleanup()
         print("Unfortunately, an error has occured")
-           
+
+
 def control_actuator(action):
-    if action=='r':
+    if action == 'r':
         print("run")
-        if(temp1==1):
-         GPIO.output(in1,GPIO.HIGH)
-         GPIO.output(in2,GPIO.LOW)
-         print("close")
-         action='z'
+        if(temp1 == 1):
+            GPIO.output(in1, GPIO.HIGH)
+            GPIO.output(in2, GPIO.LOW)
+            print("close")
+            action = 'z'
         else:
-         GPIO.output(in1,GPIO.LOW)
-         GPIO.output(in2,GPIO.HIGH)
-         print("backward")
-         action='z'
+            GPIO.output(in1, GPIO.LOW)
+            GPIO.output(in2, GPIO.HIGH)
+            print("backward")
+            action = 'z'
 
-    elif action=='stop':
+    elif action == 'stop':
         print("stop")
-        GPIO.output(in1,GPIO.LOW)
-        GPIO.output(in2,GPIO.LOW)
-        action='z'
+        GPIO.output(in1, GPIO.LOW)
+        GPIO.output(in2, GPIO.LOW)
+        action = 'z'
 
-    elif action=='open':
+    elif action == 'open':
         print("Closing window")
-        GPIO.output(in1,GPIO.HIGH)
-        GPIO.output(in2,GPIO.LOW)
-        temp1=1
-        action='z'
+        GPIO.output(in1, GPIO.HIGH)
+        GPIO.output(in2, GPIO.LOW)
+        temp1 = 1
+        action = 'z'
 
-    elif action=='close':
+    elif action == 'close':
         print("Opening window")
-        GPIO.output(in1,GPIO.LOW)
-        GPIO.output(in2,GPIO.HIGH)
-        temp1=0
-        action='z'
+        GPIO.output(in1, GPIO.LOW)
+        GPIO.output(in2, GPIO.HIGH)
+        temp1 = 0
+        action = 'z'
 
-    elif action=='low':
+    elif action == 'low':
         print("Actuator's duty cicle is LOW")
         duty_cicle_actuator.ChangeDutyCycle(25)
-        action='z'
+        action = 'z'
 
-    elif action=='medium':
+    elif action == 'medium':
         print("Actuator's duty cicle is MEDIUM")
         duty_cicle_actuator.ChangeDutyCycle(50)
-        action='z'
+        action = 'z'
 
-    elif action=='high':
+    elif action == 'high':
         print("Actuator's duty cicle is HIGH")
         duty_cicle_actuator.ChangeDutyCycle(75)
-        action='z'
-    
+        action = 'z'
+
     else:
         GPIO.cleanup()
         print("Unfortunately, an error has occured")
-        
+
+
 def subscribe(client):
     owners_topic = "users/"
     devices_topic = "devices/"
@@ -300,6 +323,7 @@ def subscribe(client):
 
     for device in sensors.split(" "):
         client.subscribe(devices_topic + device, 0)
+
 
 if __name__ == "__main__":
 
