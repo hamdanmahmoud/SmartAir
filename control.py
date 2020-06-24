@@ -107,8 +107,8 @@ def control_message(client, data, msg):
     global SENSE_CH4
     global SENSE_CO
     global SENSE_SMOKE
-    client.on_publish = control_publish
-    publish_topic = "devices/" + username + "/response"
+    global publish_data
+
     print("Subscribing: " + msg.topic + " " + str(msg.qos))
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
     payload = json.loads(msg.payload.decode())
@@ -145,13 +145,12 @@ def control_message(client, data, msg):
                 # Reading from json file
                 values_object = json.load(readData)
                 publish_data = {
-                "default_temperature": values_object["temperature_limit"],
-                "default_humidity": values_object["humidity_limit"],
-                "default_ch4": values_object["ch4_limit"],
-                "default_smoke": values_object["smoke_limit"],
-                "default_co": values_object["temperature_limit"]
-            }
-                response = client.publish(publish_topic, simplejson.dumps(publish_data), 2)
+                    "default_temperature": values_object["temperature_limit"],
+                    "default_humidity": values_object["humidity_limit"],
+                    "default_ch4": values_object["ch4_limit"],
+                    "default_smoke": values_object["smoke_limit"],
+                    "default_co": values_object["temperature_limit"]
+                }
         else:
             # Serializing json
             values_object = json.dumps(control_data, indent=4)
@@ -206,7 +205,8 @@ def main():
     client.on_log = control_log
     client.on_message = control_message
     client.on_subscribe = control_subscribe
-  
+    client.on_publish = control_publish
+    publish_topic = "devices/" + username + "/response"
     client.loop_start()
 
     print("Connecting... ")
@@ -225,6 +225,8 @@ def main():
         sys.exit()
 
     while True:
+        
+        response = client.publish(publish_topic, simplejson.dumps(publish_data), 2)
 
         time.sleep(sleep_time)
         pass
