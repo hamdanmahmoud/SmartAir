@@ -241,7 +241,7 @@ def main():
 
     while True:
         
-        response = client.publish(publish_topic, simplejson.dumps(publish_data), 2)
+        response = client.publish(publish_topic, simplejson.dumps(PUBLISH_DATA), 2)
 
         time.sleep(sleep_time)
         pass
