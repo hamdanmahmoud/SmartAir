@@ -2,6 +2,7 @@ import paho.mqtt.client as paho
 import time
 import sys
 import os
+import simplejson
 from getpass import getpass
 import json
 import RPi.GPIO as GPIO
