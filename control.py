@@ -107,7 +107,7 @@ def control_message(client, data, msg):
     global SENSE_CH4
     global SENSE_CO
     global SENSE_SMOKE
-    global publish_data
+    global PUBLISH_DATA
 
     print("Subscribing: " + msg.topic + " " + str(msg.qos))
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
@@ -144,7 +144,7 @@ def control_message(client, data, msg):
             with open('config.conf', 'r') as readData:
                 # Reading from json file
                 values_object = json.load(readData)
-                publish_data = {
+                PUBLISH_DATA = {
                     "default_temperature": values_object["temperature_limit"],
                     "default_humidity": values_object["humidity_limit"],
                     "default_ch4": values_object["ch4_limit"],
