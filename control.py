@@ -144,13 +144,7 @@ def control_message(client, data, msg):
             with open('config.conf', 'r') as readData:
                 # Reading from json file
                 values_object = json.load(readData)
-                PUBLISH_DATA = {
-                    "default_temperature": values_object["temperature_limit"],
-                    "default_humidity": values_object["humidity_limit"],
-                    "default_ch4": values_object["ch4_limit"],
-                    "default_smoke": values_object["smoke_limit"],
-                    "default_co": values_object["temperature_limit"]
-                }
+
         else:
             # Serializing json
             values_object = json.dumps(control_data, indent=4)
@@ -192,6 +186,27 @@ def control_message(client, data, msg):
         if (SENSE_CO > values_object["co_limit"] and values_object["co_limit"] > 0):
             control_actuator('open')
             print("CO OVERLIMIT - OPEN WINDOW")
+    
+    if(os.path.exists("config.conf")):
+        with open('config.conf', 'r') as readData:
+            # Reading from json file
+            values_object = json.load(readData)
+            PUBLISH_DATA = {
+                "default_temperature": values_object["temperature_limit"],
+                "default_humidity": values_object["humidity_limit"],
+                "default_ch4": values_object["ch4_limit"],
+                "default_smoke": values_object["smoke_limit"],
+                "default_co": values_object["temperature_limit"]
+            }
+    else:
+        PUBLISH_DATA = {
+            "default_temperature": 10,
+            "default_humidity": 10,
+            "default_ch4": 10,
+            "default_smoke": 10,
+            "default_co": 10
+        }
+
 
 
 def main():
