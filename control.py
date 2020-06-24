@@ -74,8 +74,20 @@ def control_subscribe(client, data, mid, granted_qos):
 
 
 def control_publish(client, userdata, mid):
-    print("mid: "+str(mid))
-    publish_topic = "devices/" + username + "/response"
+    print("Publishing: "+str(mid))
+    with open('config.conf', 'r') as readData:
+        # Reading from json file
+        values_object = json.load(readData)
+        publish_data = {
+                "default_temperature": values_object["temperature_limit"],
+                "default_humidity": values_object["humidity_limit"],
+                "default_ch4": values_object["ch4_limit"],
+                "default_smoke": values_object["smoke_limit"],
+                "default_co": values_object["temperature_limit"]
+           }
+        response = client.publish("devices/" + username + "/response", simplejson.dumps(publish_data), 2)
+
+   
 
 
 
@@ -113,10 +125,10 @@ def control_message(client, data, msg):
     print("Subscribing: " + msg.topic + " " + str(msg.qos))
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
     payload = json.loads(msg.payload.decode())
-    if(payload.get("message_type")):
+    if(payload.get("message_type")): # not readings
         print(payload["message_type"])
         if(payload["message_type"] == "command"):
-            if(payload["command"]["type"] == "change_variable"):
+            if(payload["command"]["type"] == "change_variable"): # setting variables
                 if(payload["command"]["variable"] == "temperature_limit"):
                     TEMPERATURE_LIMIT = payload["command"]["value"]
                 elif (payload["command"]["variable"] == "humidity_limit"):
@@ -127,8 +139,10 @@ def control_message(client, data, msg):
                     SMOKE_LIMIT = payload["command"]["value"]
                 elif (payload["command"]["variable"] == "co_limit"):
                     CO_LIMIT = payload["command"]["value"]
-            elif(payload["command"]["type"] == "take_action"):
+            elif(payload["command"]["type"] == "take_action"): # actionating
                 ACTTION_WINDOW = payload["command"]["action"]
+            elif(payload["command"]["type"] == "get_variables"): # perform publish on devices/username/response
+                control_publish(client)
 
         control_data = {
             "temperature_limit": TEMPERATURE_LIMIT,
@@ -138,7 +152,8 @@ def control_message(client, data, msg):
             "co_limit": CO_LIMIT,
             "action_windows": ACTTION_WINDOW
         }
-        if(os.path.exists("config.conf")):
+
+        if(os.path.exists("config.conf")): # config file exists
             values_object = json.dumps(control_data, indent=4)
             with open("config.conf", "w") as writeData:
                 writeData.write(values_object)
@@ -147,7 +162,7 @@ def control_message(client, data, msg):
                 values_object = json.load(readData)
 
             
-        else:
+        else: # config file does not exist
             # Serializing json
             values_object = json.dumps(control_data, indent=4)
             # Writing to sample.json
@@ -163,7 +178,7 @@ def control_message(client, data, msg):
             control_actuator('close')
             print("caz inchide geam")
 
-    else:
+    else: # readings
         SENSE_TEMPERATURE = payload["general"]["temperature"]
         SENSE_HUMIDITY = payload["general"]["humidity"]
         SENSE_CO = payload["poisonous"]["co"]
@@ -202,6 +217,7 @@ def main():
     client.on_message = control_message
     client.on_subscribe = control_subscribe
     client.on_publish = control_publish
+
     client.loop_start()
 
     print("Connecting... ")
