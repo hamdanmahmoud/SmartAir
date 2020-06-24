@@ -152,7 +152,7 @@ def control_message(client, data, msg):
                     "default_smoke": values_object["smoke_limit"],
                     "default_co": values_object["temperature_limit"]
                 }
-        response = client.publish(publish_topic, simplejson.dumps(publish_data), 2)
+                response = client.publish(publish_topic, simplejson.dumps(publish_data), 2)
         else:
             # Serializing json
             values_object = json.dumps(control_data, indent=4)
