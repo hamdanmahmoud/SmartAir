@@ -2,7 +2,6 @@ import paho.mqtt.client as paho
 import time
 import sys
 import os
-import simplejson
 from getpass import getpass
 import json
 import RPi.GPIO as GPIO
@@ -107,7 +106,6 @@ def control_message(client, data, msg):
     global SENSE_CH4
     global SENSE_CO
     global SENSE_SMOKE
-    global PUBLISH_DATA
 
     print("Subscribing: " + msg.topic + " " + str(msg.qos))
     print(json.dumps(json.loads(msg.payload.decode()), indent=4, sort_keys=True))
@@ -144,7 +142,6 @@ def control_message(client, data, msg):
             with open('config.conf', 'r') as readData:
                 # Reading from json file
                 values_object = json.load(readData)
-
         else:
             # Serializing json
             values_object = json.dumps(control_data, indent=4)
@@ -186,27 +183,6 @@ def control_message(client, data, msg):
         if (SENSE_CO > values_object["co_limit"] and values_object["co_limit"] > 0):
             control_actuator('open')
             print("CO OVERLIMIT - OPEN WINDOW")
-    
-    if(os.path.exists("config.conf")):
-        with open('config.conf', 'r') as readData:
-            # Reading from json file
-            values_object = json.load(readData)
-            PUBLISH_DATA = {
-                "default_temperature": values_object["temperature_limit"],
-                "default_humidity": values_object["humidity_limit"],
-                "default_ch4": values_object["ch4_limit"],
-                "default_smoke": values_object["smoke_limit"],
-                "default_co": values_object["temperature_limit"]
-            }
-    else:
-        PUBLISH_DATA = {
-            "default_temperature": 10,
-            "default_humidity": 10,
-            "default_ch4": 10,
-            "default_smoke": 10,
-            "default_co": 10
-        }
-
 
 
 def main():
@@ -240,8 +216,18 @@ def main():
         sys.exit()
 
     while True:
-        
-        response = client.publish(publish_topic, simplejson.dumps(PUBLISH_DATA), 2)
+        with open('config.conf', 'r') as readData:
+            # Reading from json file
+            values_object = json.load(readData)
+            publish_data = {
+                "default_temperature": values_object["temperature_limit"],
+                "default_humidity": values_object["humidity_limit"],
+                "default_ch4": values_object["ch4_limit"],
+                "default_smoke": values_object["smoke_limit"],
+                "default_co": values_object["temperature_limit"]
+            }
+            response = client.publish(publish_topic, simplejson.dumps(publish_data), 2)
+            time.sleep(36000)
 
         time.sleep(sleep_time)
         pass
