@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 broker = "smartair.live"
-port = 1883
+port = 9001
 sleep_time = 10
 in1 = 24
 in2 = 23
