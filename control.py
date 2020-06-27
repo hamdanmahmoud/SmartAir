@@ -7,8 +7,8 @@ import json
 import RPi.GPIO as GPIO          
 from time import sleep
 
-broker = "smartair.live"
-port = 9001
+broker = "167.71.34.169"
+port = 9002
 sleep_time = 10
 in1 = 24
 in2 = 23
