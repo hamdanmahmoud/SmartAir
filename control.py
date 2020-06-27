@@ -6,6 +6,7 @@ from getpass import getpass
 import json
 import RPi.GPIO as GPIO          
 from time import sleep
+from OpenSSL import SSL as ssl
 
 broker = "167.71.34.169"
 port = 9002
@@ -189,6 +190,8 @@ def main():
     client.on_log = control_log
     client.on_message = control_message
     client.on_subscribe = control_subscribe
+
+    client.tls_set("/home/pi/SmartAir-RPI/smartaircertificate.pem")
 
     client.loop_start()
 
