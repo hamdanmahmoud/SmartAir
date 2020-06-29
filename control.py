@@ -6,10 +6,9 @@ from getpass import getpass
 import json
 import RPi.GPIO as GPIO          
 from time import sleep
-from OpenSSL import SSL as ssl
 
 broker = "167.71.34.169"
-port = 9002
+port = 9001
 sleep_time = 10
 in1 = 24
 in2 = 23
@@ -191,16 +190,15 @@ def main():
     client.on_message = control_message
     client.on_subscribe = control_subscribe
 
-    client.tls_set("/home/pi/SmartAir-RPI/smartaircertificate.pem")
-
     client.loop_start()
 
     print("Connecting... ")
     try:
         client.connect(broker,port)
         
-    except:
+    except e:
         print("Connection failed")
+        print(e)
         exit(1) #retry
 
     while not client.connected_flag and not client.bad_connection_flag:
@@ -262,14 +260,12 @@ def control_actuator(action):
         action='z'
 
     elif action=='open':
-        print("Closing window")
         GPIO.output(in1,GPIO.HIGH)
         GPIO.output(in2,GPIO.LOW)
         temp1=1
         action='z'
 
     elif action=='close':
-        print("Opening window")
         GPIO.output(in1,GPIO.LOW)
         GPIO.output(in2,GPIO.HIGH)
         temp1=0
