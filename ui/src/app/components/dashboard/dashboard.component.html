@@ -1,0 +1,242 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+
+                <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                        <button class="turnOnOff card-icon  btn-light-green"><i
+                                class="material-icons">power_settings_new</i></button>
+
+                        <p class="card-category">{{ls.strings.default.activeDevices}}</p>
+                        <h4 class="card-title">{{numberOfUserDevices}}
+                            <small></small>
+                        </h4>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons text-danger">warning</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">store</i>
+                        </div>
+                        <p class="card-category">{{ls.strings.default.costSavings}}</p>
+                        <h4 class="card-title">$34,245</h4>
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">date_range</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-danger card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">info_outline</i>
+                        </div>
+                        <p class="card-category">{{ls.strings.default.fixedIssues}}</p>
+                        <h4 class="card-title">75</h4>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">local_offer</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <button mat-fab (click)="changeToLive()"
+                                [ngClass]="isLive ? 'btn-danger' : 'btn-success'" class="live"
+                                aria-label="Example icon button with a delete icon">
+                                {{this.isLive ? ls.strings.default.liveBtnStop: ls.strings.default.liveBtn}}
+                            </button> </div>
+                        <p class="card-category">{{ls.strings.default.liveNew}}</p>
+                        <h4 class="card-title">
+                            {{this.isLive ? ls.strings.default.liveTextStop: ls.strings.default.liveTextStart}}
+                        </h4>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">update</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <mat-card>
+                    <div class="row">
+
+                        <div class="example-button-row col-md-5">
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setLeftChartPeriod('1y')">1Y</button>
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setLeftChartPeriod('1m')">1M</button>
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setLeftChartPeriod('7d')">7D</button>
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setLeftChartPeriod('1d')">1D</button>
+                        </div>
+                        <div class="col-md-1">
+                            <h4>{{defaultLeftDeviceUsername}}</h4>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="device" mdbDropdown>
+                                <button mdbDropdownToggle type="button" mdbBtn
+                                    style="background-color:#79c40e; color:#FFF" class="dropdown-toggle waves-light"
+                                    mdbWavesEffect>
+                                    {{ls.strings.default.your_devices}}
+                                </button>
+
+                                <div class="dropdown-menu dropdown-primary">
+                                    <a class="dropdown-item" *ngFor="let device of senseDevices"
+                                        (click)="changeLeftChartDevice(device)">{{device.getUsername()}}</a>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div style="display: block">
+                        <canvas mdbChart [chartType]="leftChartType" [datasets]="leftChartDatasets"
+                            [labels]="leftChartLabels" [colors]="leftChartColors" [options]="leftChartOptions"
+                            [legend]="true" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                </mat-card>
+            </div>
+
+            <div class="col-md-6">
+                <mat-card>
+
+                    <div class="row">
+                        <div class="example-button-row col-md-5">
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setRightChartPeriod('1y')">1Y</button>
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setRightChartPeriod('1m')">1M</button>
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setRightChartPeriod('7d')">7D</button>
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setRightChartPeriod('1d')">1D</button>
+                        </div>
+                        <div class="col-md-1">
+                            <h4>{{defaultRightDeviceUsername}}</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="device" mdbDropdown>
+                                <button mdbDropdownToggle type="button" mdbBtn
+                                    style="background-color:#79c40e ; color:#FFF" class="dropdown-toggle waves-light"
+                                    mdbWavesEffect>
+                                    {{ls.strings.default.your_devices}}
+                                </button>
+
+                                <div class="dropdown-menu dropdown-primary">
+                                    <a class="dropdown-item" *ngFor="let device of senseDevices"
+                                        (click)="changeRightChartDevice(device)">{{device.getUsername()}}</a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div style="display: block">
+                        <canvas mdbChart [chartType]="rightChartType" [datasets]="rightChartDatasets"
+                            [labels]="rightChartLabels" [colors]="rightChartColors" [options]="rightChartOptions"
+                            [legend]="true" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                </mat-card>
+            </div>
+
+        </div>
+        <hr style="clear:both;">
+
+        <div class="row">
+
+            <div class="barChart col-md-12">
+                <mat-card>
+            
+                    <div class="row">
+                        <div class="example-button-row col-md-5">
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setBarChartPeriod('1y')">1Y</button>
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setBarChartPeriod('1m')">1M</button>
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setBarChartPeriod('7d')">7D</button>
+                            <button class="periodbtn" mat-mini-fab color="primary"
+                                (click)="setBarChartPeriod('1d')">1D</button>
+                        </div>
+                    
+                        <div class="col-md-1">
+                            <h4>{{defaultBarDeviceUsername}}</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="device" mdbDropdown>
+                                <button mdbDropdownToggle type="button" mdbBtn
+                                    style="background-color:#79c40e; color:#FFF" class="dropdown-toggle waves-light"
+                                    mdbWavesEffect>
+                                    {{ls.strings.default.your_devices}}
+                                </button>
+
+                                <div class="dropdown-menu dropdown-primary">
+                                    <a class="dropdown-item" *ngFor="let device of senseDevices"
+                                        (click)="changeBarChartDevice(device)">{{device.getUsername()}}</a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div style="display: block; ">
+                        <canvas height="80" mdbChart [chartType]="barChartType" [datasets]="barChartDatasets"
+                            [labels]="barChartLabels" [colors]="barChartColors" [options]="barChartOptions"
+                            [legend]="true" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                </mat-card>
+
+            </div>
+        </div>
+        <hr style="clear:both;">
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <mat-card>
+                    <app-home-management [senseDevices]=senseDevices [controlDevices]=controlDevices></app-home-management>
+                </mat-card>
+            </div>
+            <div class="col-md-5">
+               
+                <!-- <mat-card>
+                    <canvas mdbChart [datasets]="bubbleChartData" [options]="bubbleChartOptions"
+                        [colors]="bubbleChartColors" [legend]="bubbleChartLegend" [chartType]="bubbleChartType">
+                    </canvas>
+                </mat-card> -->
+            </div>
+
+        </div>
+
+    </div>
+</div>

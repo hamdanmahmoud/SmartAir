@@ -1,0 +1,61 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header card-header-info" >
+                        <h4 class="card-title" style="text-align: center;">{{ls.strings.default.login_title}}</h4>
+
+                    </div>
+                    <div class="card-body">
+                        <form class="form-login" [formGroup]="loginForm" (ngSubmit)="doLogin()">
+                            <div class="row" style="display: block;">
+
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>{{ls.strings.default.username}}</mat-label>
+                                        <input formControlName="username" matInput  name="username">
+
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>{{ls.strings.default.password}}</mat-label>
+                                        <input matInput formControlName="password"  name="password"
+                                            type="password">
+
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div style="text-align:center"><!-- <button mat-raised-button type="submit" class="btn btn-info "
+                                    [disabled]="!isValidForm()">{{ls.strings.default.login}}</button> -->
+                                    <button mdbBtn type="button"[disabled]="!isValidForm()" class="login"
+                            mdbWavesEffect type="submit">{{ls.strings.default.login}} <mdb-icon fas icon="user-alt"></mdb-icon></button>
+                            </div>
+                            <div class="clearfix">
+                                <a   class="forgotPass" (click)="passwordRecovery()">{{ls.strings.default.forgot_pass}} </a>
+                            </div>
+
+                        </form>
+                        <div *ngIf="loginResponse" class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="text-danger">
+                                        {{ls.strings.default.incorrectPassOrId}}
+                                    </p>
+
+    
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

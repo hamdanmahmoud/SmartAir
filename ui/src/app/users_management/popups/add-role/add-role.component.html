@@ -1,0 +1,24 @@
+<form [formGroup]="angForm" novalidate>
+    <div class="form-group">
+        <label class="col-md-12">Numele Rolului</label>
+        <input type="text" class="form-control" formControlName="roleName" #roleName />
+    </div>
+
+    <div *ngIf="angForm.controls['roleName'].invalid && (angForm.controls['roleName'].dirty || angForm.controls['roleName'].touched)"
+        class="alert alert-danger">
+        <div *ngIf="angForm.controls['roleName'].errors.required">
+            {{ls.strings.default.addRole_fieldError}}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="text-center">
+                <div class="form-group">
+                    <button mdbBtn mdbWavesEffect (click)="addRole(roleName.value)" type="submit"
+                        [disabled]="angForm.pristine || angForm.invalid" class="btn ">ADAUGA</button><!--  [disabled]="angForm.pristine || angForm.invalid" -->
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

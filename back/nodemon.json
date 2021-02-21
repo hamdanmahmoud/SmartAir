@@ -1,0 +1,14 @@
+{
+    "watch": [
+        "src"
+    ],
+    "ext": ".ts,.js",
+    "ignore": [],
+    "exec": "ts-node ./src/server.ts",
+    "env": {
+        "MONGO_ATLAS_USER": "smartair",
+        "MONGO_ATLAS_PW": "nxdE6BcC83BIa5iA",
+        "PRIVATE_KEY": "yYZDuYLToGcdUlA8",
+        "ELASTICSEARCH_PW": "oJZATQrXsHeGbYBFkCNJgmKH@71d861b66c0e4e67b747fb43c1828e6e"
+    }
+}

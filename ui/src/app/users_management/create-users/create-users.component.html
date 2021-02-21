@@ -1,0 +1,89 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">{{ls.strings.default.createUsers_createUsers}}</h4>
+                        <p class="card-category">{{ls.strings.default.createUsers_addUsers}}</p>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="userDetails">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="userid"
+                                            placeholder={{ls.strings.default.createUsers_userid}} [(ngModel)]="username"
+                                            required>
+                                        <mat-error *ngIf="userDetails.get('userid')?.invalid">
+                                            {{ls.strings.default.createUsers_requiredField_username}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input formControlName="email" matInput
+                                            placeholder={{ls.strings.default.createUsers_email}} type="email"
+                                            [(ngModel)]="email" name="email" required>
+                                        <mat-error *ngIf="userDetails.get('email')?.invalid">
+                                            {{ls.strings.default.createUsers_requiredField}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="firstName"
+                                            placeholder={{ls.strings.default.createUsers_firstName}}
+                                            [(ngModel)]="firstName" type="text" required>
+                                        <mat-error *ngIf="userDetails.get('firstName')?.invalid">
+                                            {{ls.strings.default.createUsers_requiredField}}</mat-error>
+
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input formControlName="lastName" matInput
+                                            placeholder={{ls.strings.default.createUsers_lastName}}
+                                            [(ngModel)]="lastName" type="text" required>
+                                        <mat-error *ngIf="userDetails.get('lastName')?.invalid">
+                                            {{ls.strings.default.createUsers_requiredField}}</mat-error>
+
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-list-item class="role-multiple-select" role="listitem">
+                                        <mat-form-field class="selectForm">
+                                            <mat-label>{{ls.strings.default.users_role}}</mat-label>
+                                            <mat-select aria-placeholder="Roles" name="role" class="filter-select"
+                                                formControlName="selectedRoles"
+                                                (selectionChange)="changeClient($event.value)" multiple>
+                                                <mat-option *ngFor="let role of availableRoles"
+                                                    value="{{role.getName()}}">{{role.getName()}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="userDetails.get('selectedRoles')?.invalid">
+                                                {{ls.strings.default.createUsers_requiredField}}</mat-error>
+                                        </mat-form-field>
+                                    </mat-list-item>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                            <button  style="background-color:#79c40e; color:#FFF" mdbBtn type="submit" class="btn pull-right"
+                            mdbWavesEffect (click)="createUser()">{{ls.strings.default.createUsers_createUserBtn}}</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

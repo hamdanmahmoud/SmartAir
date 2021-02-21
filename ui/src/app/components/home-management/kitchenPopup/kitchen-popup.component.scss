@@ -1,0 +1,258 @@
+button {
+    outline:none !important;
+    
+   
+}
+.container-fluid{
+  overflow: auto !important;
+  display: flex;
+  flex-direction: column;
+}
+.control{
+  display:inline-block
+}
+.devicecontrol{
+  display:inline-block
+}
+.location{
+  margin-left: 25%;
+}
+.limits {
+  margin-top:5%;
+}
+.windows{
+  margin-top:5%;
+}
+
+h6{
+    margin-top:10%;
+    margin-right:1%;
+    font-weight: 300;
+    font-size: 19px;
+    line-height: 1.4em;
+    color: #404040;
+}
+
+@media screen and (max-width: 800px) {
+ 
+  .location{
+    margin-left: 0%;
+  }
+  .col-md-2{
+    margin-top:0
+  }
+  h5{
+    text-align: center;
+  }
+  
+
+  .windowControl{
+    margin-top:10px;
+    height: 50px;
+    width: 100%;
+  }
+  .close {
+    margin-bottom: 10%;
+  }
+
+}
+::ng-deep {
+    .temperature-slider .ng5-slider .ng5-slider-bar {
+      background:#e42030;
+      height: 5px;
+    }
+  
+    .temperature-slider .ng5-slider .ng5-slider-pointer {
+        width: 30px;
+        height: 40px;
+      top: auto; /* to remove the default positioning */
+      bottom: 0;
+      background-image: url('../../../../assets/img/termometer.png'); /* Free from : https://www.uihere.com/free-cliparts/clip-art-cold-image-openclipart-illustration-thermometer-clipart-7098812 */
+      background-size: cover;  
+      background-color:#ffffff;
+      top: -10px;
+      box-shadow:         3px 3px 5px 6px #ccc;
+    }
+  
+    .temperature-slider .ng5-slider .ng5-slider-pointer:after {
+      display: none;
+    }
+  
+    .temperature-slider .ng5-slider .ng5-slider-bubble {
+      bottom: 14px;
+    }
+  
+    .temperature-slider .ng5-slider .ng5-slider-limit {
+      font-weight: bold;
+      color: blue;
+    }
+  
+    .temperature-slider .ng5-slider .ng5-slider-tick {
+      width: 5px;
+      height: 10px;
+      margin-left: 4px;
+      border-radius: 0;
+      background: #001324;
+      top: -1px;
+    }
+  }
+
+  ::ng-deep {
+    .humidity-slider .ng5-slider .ng5-slider-bar {
+      background:#0084FF;
+      height: 5px;
+    }
+  
+    .humidity-slider .ng5-slider .ng5-slider-pointer {
+        width: 30px;
+        height: 45px;
+      top: auto; /* to remove the default positioning */
+      bottom: 0;
+      background-image: url('../../../../assets/img/humidity.png');
+      background-size: cover;  
+      background-color:#ffffff;
+      top: -10px;
+      box-shadow:         3px 3px 5px 6px #ccc;
+    }
+  
+    .humidity-slider .ng5-slider .ng5-slider-pointer:after {
+      display: none;
+    }
+  
+    .humidity-slider .ng5-slider .ng5-slider-bubble {
+    }
+  
+    .humidity-slider .ng5-slider .ng5-slider-limit {
+      font-weight: bold;
+      color: blue;
+    }
+  
+    .humidity-slider .ng5-slider .ng5-slider-tick {
+      width: 5px;
+      height: 10px;
+      margin-left: 4px;
+      border-radius: 0;
+      background: #001324;
+      top: -1px;
+    }
+  }
+  ::ng-deep {
+    .co-slider .ng5-slider .ng5-slider-bar {
+      background:#dae453ef;
+      height: 5px;
+    }
+  
+    .co-slider .ng5-slider .ng5-slider-pointer {
+        width: 27px;
+        height: 45px;
+      top: auto; /* to remove the default positioning */
+      bottom: 0;
+      background-image: url('../../../../assets/img/co.png'); /*Source: https://www.pngwave.com/png-clip-art-vmkbx */
+      background-size: cover;  
+      background-color:#ffffff;
+      top: -10px;
+      box-shadow:         3px 3px 5px 6px #ccc;
+    }
+  
+    .co-slider .ng5-slider .ng5-slider-pointer:after {
+      display: none;
+    }
+  
+    .co-slider .ng5-slider .ng5-slider-bubble {
+      bottom: 14px;
+    }
+  
+    .co-slider .ng5-slider .ng5-slider-limit {
+      font-weight: bold;
+      color: blue;
+    }
+  
+    .co-slider .ng5-slider .ng5-slider-tick {
+      width: 5px;
+      height: 10px;
+      margin-left: 100px;
+      border-radius: 0;
+      background: #001324;
+      top: -1px;
+    }
+  }
+  ::ng-deep {
+    .ch4-slider .ng5-slider .ng5-slider-bar {
+      background:#00ff9d;
+      height: 5px;
+    }
+  
+    .ch4-slider .ng5-slider .ng5-slider-pointer {
+        width: 27px;
+        height: 50px;
+      top: auto; /* to remove the default positioning */
+      bottom: 0;
+      background-image: url('../../../../assets/img/ch4.png'); /*Source: https://ro.m.wikipedia.org/wiki/Fi%C8%99ier:Elektronenformel_Punkte_CH4.svg */
+      background-size: cover;  
+      background-color:#ffffff;
+      top: -10px;
+      box-shadow:         3px 3px 5px 6px #ccc;
+    }
+  
+    .ch4-slider .ng5-slider .ng5-slider-pointer:after {
+      display: none;
+    }
+  
+    .ch4-slider .ng5-slider .ng5-slider-bubble {
+      bottom: 14px;
+    }
+  
+    .ch4-slider .ng5-slider .ng5-slider-limit {
+      font-weight: bold;
+      color: blue;
+    }
+  
+    .ch4-slider .ng5-slider .ng5-slider-tick {
+      width: 5px;
+      height: 10px;
+      margin-left: 4px;
+      border-radius: 0;
+      background: #001324;
+      top: -1px;
+    }
+  }
+  ::ng-deep {
+    .smoke-slider .ng5-slider .ng5-slider-bar {
+      background:#3c4247;
+      height: 5px;
+    }
+  
+    .smoke-slider .ng5-slider .ng5-slider-pointer {
+        width: 27px;
+        height: 45px;
+      top: auto; /* to remove the default positioning */
+      bottom: 0;
+      background-image: url('../../../../assets/img/smoke.png'); /*Source : https://pngimage.net/cartoon-smoke-png-2/"*/
+      background-size: cover;  
+      background-color:#ffffff;
+      top: -10px;
+      box-shadow:         3px 3px 5px 6px #ccc;
+    }
+  
+    .smoke-slider .ng5-slider .ng5-slider-pointer:after {
+      display: none;
+    }
+  
+    .smoke-slider .ng5-slider .ng5-slider-bubble {
+      bottom: 14px;
+    }
+  
+    .smoke-slider .ng5-slider .ng5-slider-limit {
+      font-weight: bold;
+      color: blue;
+    }
+  
+    .smoke-slider .ng5-slider .ng5-slider-tick {
+      width: 5px;
+      height: 10px;
+      margin-left: 4px;
+      border-radius: 0;
+      background: #001324;
+      top: -1px;
+    }
+  }

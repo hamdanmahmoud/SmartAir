@@ -1,0 +1,47 @@
+{
+  "apps": [
+    {
+      "name": "HTTP_SERVER",
+      "script": "node_modules/.bin/ts-node",
+      "args": "src/server.ts",
+      "watch": true,
+      "instances": 1,
+      "exec_mode": "cluster",
+      "autorestart": true,
+      "max_restarts": 5,
+      "max_memory_restart": "1G",
+      "min_uptime": 5000,
+      "env": {
+        "NODE_ENV": "production",
+        "HOST": "smartair.live",
+        "PORT": 3000,
+        "PRIVATE_KEY": "yYZDuYLToGcdUlA8",
+        "ELASTICSEARCH_PW": "hnqePxE0QCstWWlygyCHQBal",
+        "ELASTICSEARCH_CLOUD_URL": "@67547e54f73640178443070eec188955.eu-central-1.aws.cloud.es.io:9243",
+        "MONGO_USER": "smartair",
+        "MONGO_PW": "A*_@>#f;%B%(d3Q5"
+      }
+    },
+    {
+      "name": "MQTT_BROKER",
+      "script": "node_modules/.bin/ts-node",
+      "args": "src/broker.ts",
+      "watch": true,
+      "instances": 1,
+      "exec_mode": "cluster",
+      "autorestart": true,
+      "max_restarts": 5,
+      "max_memory_restart": "1G",
+      "min_uptime": 5000,
+      "env": {
+        "NODE_ENV": "production",
+        "HOST": "smartair.live",
+        "PORT": 9001,
+        "MONGO_USER": "smartair",
+        "MONGO_PW": "A*_@>#f;%B%(d3Q5",
+        "ELASTICSEARCH_PW": "hnqePxE0QCstWWlygyCHQBal",
+        "ELASTICSEARCH_CLOUD_URL": "@67547e54f73640178443070eec188955.eu-central-1.aws.cloud.es.io:9243"
+      }
+    }
+  ]
+}

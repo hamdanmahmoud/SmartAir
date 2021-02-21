@@ -1,0 +1,23 @@
+.btn {
+    width:30%
+}
+
+.pull-center{
+    float:none !important;
+    margin: 0 auto
+}
+
+.buttonsBlock{
+    text-align: center;
+}
+.btn{
+    background-color:#79c40e ;
+    color:#FFF;
+    display:inline-block;
+  }
+  @media screen and (max-width: 800px) {
+    .btn {
+        width: 100%;
+        margin-bottom: 2%;
+    }
+}

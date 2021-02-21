@@ -1,0 +1,66 @@
+/* @import './../../@theme/styles/themes.scss';
+ */
+
+ 
+
+  svg {
+    width: 100%;
+    background-color: white;
+  }
+
+  .stroke-pattern {
+    fill: none;
+    stroke: #bdc4cd;
+    stroke-miterlimit: 10;
+    opacity: 0.1;
+    stroke-width: 1px;
+  }
+
+  .stroked-element {
+    stroke-width: 4px;
+    stroke: #bdc4cd;
+    stroke-miterlimit: 10;
+  }
+
+  .room-border {
+    stroke-width: 4px;
+    stroke: #bdc4cd;
+    stroke-miterlimit: 10;
+    fill: none;
+  }
+
+  .room-bg {
+    fill: #FFFFFF;
+    stroke: transparent;
+    cursor: pointer;
+    stroke-width: 4px;
+  }
+
+  .room-bg-border-grad {
+    fill: none;
+    stroke: none;
+    stroke-width: 4px;
+  }
+
+  .room-text {
+    cursor: pointer;
+    user-select: none;
+    pointer-events: none;
+   // fill:#000000;
+  }
+
+  .selected-room {
+    z-index: 40;
+
+    .room-text {
+     // fill: #0a0101;
+    }
+    .room-border {
+      stroke: #1acc23;
+    }
+  }
+
+  .header {
+    border-bottom: none;
+    padding-bottom: 0;
+  }

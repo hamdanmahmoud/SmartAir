@@ -1,0 +1,7 @@
+/* You can add global styles to this file, and also import other style files */
+.live-dialog-container >  mat-dialog-container {
+    background-color: red;
+}
+.cdk-overlay-container {
+    z-index: 9999 !important;
+}

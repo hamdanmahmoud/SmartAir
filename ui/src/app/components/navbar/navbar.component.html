@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-wrapper">
+            <a class="navbar-brand" href="javascript:void(0)"></a>
+        </div>
+        <button mat-raised-button class="navbar-toggler" type="button" (click)="sidebarToggle()">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navigation">
+    
+            <img class="language3" (click)="changeToFrench()" />
+
+            <img class="language1" (click)="changeToEnglish()"  />
+            <img class="language2" (click)="changeToRomanian()" />
+
+
+            <ul class="navbar-nav">
+                <li *ngIf="isLoggedIn()" class="nav-item dropdown">
+                    <a class="nav-link" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="material-icons">remove_red_eye</i> {{authService.impersonateRole.getName()}} 
+                        <p>
+                            <span class="d-lg-none d-md-block">Some Actions</span>
+                        </p>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <li *ngFor="let role of authService.roles">
+                            <a class="dropdown-item" href="javascript:void(0)" (click)="changeImpersonate(role)">{{role.getName()}}</a></li>
+                    </div>
+                </li>
+       
+                <li class="nav-item">
+                    <a class="nav-link">
+                            <button mdbBtn type="button" *ngIf="!isLoggedIn()" (click)="openLoginForm()" class="login"
+                            mdbWavesEffect>{{ls.strings.default.login}} <mdb-icon fas icon="user-alt"></mdb-icon></button>
+                            <button mdbBtn type="button"*ngIf="isLoggedIn()"(click)="logout();"class="logout" 
+                            mdbWavesEffect>{{ls.strings.default.logout}} <mdb-icon fas icon="user-alt"></mdb-icon></button>
+                    </a>
+                   
+
+                </li>
+                
+                
+            </ul>
+        </div>
+    </div>
+</nav>

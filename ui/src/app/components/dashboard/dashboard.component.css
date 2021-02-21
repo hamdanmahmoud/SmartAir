@@ -1,0 +1,35 @@
+.device{
+    float: right !important;
+    padding-top: 0 !important;
+    height: 10%;
+  
+}
+.turnOnOff{
+    outline:none !important;
+    border: none !important;
+
+}
+.btn-group {
+    display: inline-block;
+}
+.periodbtn{
+    outline:none !important;
+    background-color: #6200EE;
+}
+.barChart{
+    height:50% !important;
+}
+.col-sm-12 {
+    min-height: 50vh;
+} 
+.live{
+/*     background-color:#86d90f !important;
+ */    color:#FFF
+}
+.live{
+    outline:none !important;
+    background-color: #6200EE;
+}
+mat-card{
+    background-color: #F0F0F0;
+}

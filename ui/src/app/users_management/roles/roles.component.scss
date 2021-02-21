@@ -1,0 +1,41 @@
+.material-icons {
+    font-size: 20px;
+    margin-right: 5px;
+    padding-right: 5px;
+}
+
+.form-check {
+    margin: auto;
+    margin-left: 8px;
+    margin-bottom: 25px;
+}
+
+th {
+    font-size: 15px;
+    font-style: bold;
+}
+
+.roleType {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.btn{
+    background-color:#6200EE ;
+    color:#FFF;
+    display:inline-block;
+    
+  }
+
+  @media screen and (max-width: 800px) {
+      .card-body {
+          overflow-x: auto;
+      }
+      .btn{
+        background-color:#6200EE ;
+        color:#FFF;
+        display:inline-block;
+        width: 100%;
+        
+      }
+  }

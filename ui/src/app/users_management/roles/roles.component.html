@@ -1,0 +1,157 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">{{ls.strings.default.createRoles_currentRoles}}</h4>
+                        <p class="card-category">{{ls.strings.default.createRoles_addRoles}}</p>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <!-- <div class="device" mdbDropdown>
+                                        <button mdbDropdownToggle type="button" mdbBtn color="#6200EE" style="background-color:#6200EE; color:#FFF" class="dropdown-toggle waves-light" mdbWavesEffect>
+                                            Your devices
+                                        </button>
+                    
+                                        <div class="dropdown-menu dropdown-primary">
+                                            <a class="dropdown-item" *ngFor="let device of devices" (click) ="changeBarChartDevice(device)">{{device.getUsername()}}</a>
+                    
+                                        </div>
+                                    </div> -->
+                                    <div class="dropdown" mdbDropdown>
+                                        <button mdbDropdownToggle  mdbBtn href="#"  style="background-color:#6200EE; color:#FFF"class="btn dropdown-toggle waves-light " 
+                                            aria-expanded="true">
+                                            {{ls.strings.default.createRoles_rolesList}}
+                                            <b class="caret"></b>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li *ngFor="let role of roles" (click)="changeRole(role)">
+                                                <a>{{ role.getName() }}</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button mdbButton mdbWavesEffect class="btn "
+                                        [disabled]="!authGuard.canCreate(router.url)"
+                                        (click)="addRole()">{{ls.strings.default.createRoles_newRoleBtn}}</button>
+                                </div>
+                                <div class="col-md-2">
+                                    <p class="roleType text-info">
+                                        {{role.getName()}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <table class="table" mat-table [dataSource]="dataSource" class="container-fluid"
+                                    style="text-align: left;">
+                                    <ng-container matColumnDef="component" class="col-lg-2 col-md-2 col-sm-2">
+                                        <th class="text-primary" mat-header-cell *matHeaderCellDef>
+                                            {{ls.strings.default.createRoles_components}}</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.component}} </td>
+
+                                    </ng-container>
+                                    <ng-container matColumnDef="access">
+                                        <th class="text-primary" mat-header-cell *matHeaderCellDef>Access</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        [checked]='element.access'
+                                                        (click)='changePermission(element.component, "access")'>
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="retrieve">
+                                        <th class="text-primary" mat-header-cell *matHeaderCellDef>
+                                            {{ls.strings.default.createRoles_retrieve}}</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        [checked]='element.retrieve'
+                                                        (click)='changePermission(element.component, "retrieve")'>
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="create">
+                                        <th class="text-primary" mat-header-cell *matHeaderCellDef>
+                                            {{ls.strings.default.createRoles_create}}</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        [checked]='element.create'
+                                                        (click)='changePermission(element.component, "create")'>
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="update">
+                                        <th class="text-primary" mat-header-cell *matHeaderCellDef>
+                                            {{ls.strings.default.createRoles_update}}</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        [checked]='element.update'
+                                                        (click)='changePermission(element.component, "update")'>
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="delete">
+                                        <th class="text-primary" mat-header-cell *matHeaderCellDef>
+                                            {{ls.strings.default.createRoles_delete}} </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        [checked]='element.delete'
+                                                        (click)='changePermission(element.component, "delete")'>
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="rows"></tr>
+
+                                </table>
+                            </div>
+                            <button mdbBtn mdbWavesEffect type="submit" class="btn pull-right" style="background-color:#79c40e; color:#FFF"
+                                [disabled]="((!authGuard.canCreate(router.url) && !authGuard.canUpdate(router.url))) ? true : false"
+                                (click)="saveRole()">{{ls.strings.default.createRoles_saveRoleBtn}}</button>
+                            <!-- Just a mock button, not my job -->
+                            <button mdbBtn mdbWavesEffect class="btn btn-danger pull-right"
+                                [disabled]="!authGuard.canDelete(router.url)"
+                                (click)="removeRole()">{{ls.strings.default.createRoles_removeRoleBtn}}</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>

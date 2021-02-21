@@ -1,0 +1,193 @@
+import { UserModel as User } from '../models/User';
+import { errHandler } from '../utils/errHandlingUtils';
+import crypto from 'crypto';
+import { RoleModel as Role } from '../models/Role';
+const sendmail = require('sendmail')();
+
+const jwt = require('jsonwebtoken');
+const issuer = 'Smart Air';
+const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+const signOptions = {
+  issuer: issuer,
+  expiresIn: 43200000, // 12h
+};
+
+export function login(req: any, res: any) {
+  const auth = req.body.auth;
+  try {
+    if (!auth || !auth.username || !auth.password) {
+      throw 401;
+    }
+  } catch (err) {
+    console.log(err);
+    errHandler(err, res);
+    return;
+  }
+
+  const username = auth.username;
+  const password = auth.password;
+
+  let time = Date.now();
+  let passwordHash = crypto.createHash('sha256').update(password).digest('hex');
+
+  console.log(username, password);
+  User.findOneAndUpdate({ username: username, password: passwordHash }, { session: new Date(time) }, { new: true })
+    .then((document: any) => {
+      if (!document) {
+        throw 401;
+      }
+      let user = JSON.parse(JSON.stringify(document));
+      delete user.__v;
+      delete user._id;
+      delete user.password;
+
+      let roles: [string] = user.roles;
+      let roleDocuments: any[] = [];
+      for (let i = 0; i < roles.length; i++) {
+        Role.findOne({ name: roles[i] }, { _id: 0, __v: 0 }).then((roleDocument) => {
+          roleDocuments.push(roleDocument);
+          if (roleDocuments.length == roles.length) {
+            user.roles = roleDocuments;
+            const token = jwt.sign({ user: user, iat: time }, process.env.PRIVATE_KEY, signOptions);
+            console.log('USER LOGGED IN!');
+            res.status(200).send({
+              user: user,
+              token: token,
+            });
+          }
+        });
+      }
+    })
+    .catch((err) => errHandler(err, res));
+}
+
+export function recoverPassword(req: any, res: any) {
+  const identification = req.body.identification;
+  try {
+    if (!identification) {
+      throw 400;
+    }
+  } catch (err) {
+    console.log(err);
+    errHandler(err, res);
+    return;
+  }
+
+  let time = Date.now();
+  let tempPassword = time.toString();
+  let passwordHash = crypto.createHash('sha256').update(tempPassword).digest('hex');
+
+  let query;
+  if (isMail(identification)) {
+    query = {
+      email: identification,
+    };
+  } else {
+    query = {
+      username: identification,
+    };
+  }
+
+  User.findOneAndUpdate(query, { password: passwordHash, active: false }, { new: true })
+    .then((document: any) => {
+      if (!document) {
+        throw 401;
+      }
+      let user = JSON.parse(JSON.stringify(document));
+      let link = 'http://smartair.live/#/changepassword/' + document.username;
+      console.log('Sending mail to ' + document.email);
+      sendmail(
+        {
+          from: 'no-reply@smartair.live',
+          to: document.email,
+          subject: 'Activate your account',
+          html:
+            '<p> Dear ' +
+            document.username +
+            ', <br>Your password has just been resetted, so now you have to change your temporary password (' +
+            tempPassword +
+            ') using the following link:<br> ' +
+            link +
+            '<br></p>',
+        },
+        function (err: any, reply: any) {
+          console.log(err && err.stack);
+          console.dir(reply);
+        },
+      );
+      res.status(200).send();
+    })
+    .catch((err) => errHandler(err, res));
+}
+
+export function changePassword(req: any, res: any) {
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
+
+  let oldPasswordHash = crypto.createHash('sha256').update(oldPassword).digest('hex');
+  let newPasswordHash = crypto.createHash('sha256').update(newPassword).digest('hex');
+
+  const query = {
+    username: req.params.username,
+    password: oldPasswordHash,
+  };
+
+  console.log('Query is', query, oldPassword, newPassword);
+  User.findOneAndUpdate(query, { password: newPasswordHash, active: true }, { new: true })
+    .then((document: any) => {
+      console.log('Document:', document);
+      if (!document) {
+        console.log('No document returned for this query.');
+        throw 401;
+      }
+      console.log('Returning status 200');
+      res.status(200).send();
+    })
+    .catch((err) => errHandler(err, res));
+}
+
+export function resetPassword(req: any, res: any) {
+  let time = Date.now();
+  let tempPassword = time.toString();
+  let passwordHash = crypto.createHash('sha256').update(tempPassword).digest('hex');
+
+  const query = {
+    username: req.params.username,
+  };
+
+  User.findOneAndUpdate(query, { password: passwordHash, active: false }, { new: true })
+    .then((document: any) => {
+      if (!document) {
+        throw 401;
+      }
+      let user = JSON.parse(JSON.stringify(document));
+      let link = 'http://smartair.live/#/changepassword/' + document.username;
+      console.log('Sending mail to ' + document.email);
+      sendmail(
+        {
+          from: 'no-reply@smartair.live',
+          to: document.email,
+          subject: 'Activate your account',
+          html:
+            '<p> Dear ' +
+            document.username +
+            ', <br>Your password has just been resetted by the administrator, so now you`ll have to change your temporary password (' +
+            tempPassword +
+            ') using the following link:<br> ' +
+            link +
+            '<br></p>',
+        },
+        function (err: any, reply: any) {
+          console.log(err && err.stack);
+          console.dir(reply);
+        },
+      );
+      res.status(200).send();
+    })
+    .catch((err) => errHandler(err, res));
+}
+
+function isMail(mail: string) {
+  return regex.test(mail.toLowerCase());
+}

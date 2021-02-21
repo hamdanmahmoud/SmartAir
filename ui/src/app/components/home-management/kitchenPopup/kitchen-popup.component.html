@@ -1,0 +1,159 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header card-header-info">
+          <h4 class="card-title">{{ls.strings.default.kitchenTitle}}</h4>
+          <p class="card-category">{{ls.strings.default.kitchenSubtitle}}</p>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <h6>{{ls.strings.default.chooseDevice}}:</h6>
+
+            </div>
+            <div class="col-md-3">
+              <div class="btn-group" mdbDropdown>
+                <button mdbDropdownToggle type="button" mdbBtn style="background-color:#79c40e ; color:#FFF"
+                  class="dropdown-toggle waves-light" mdbWavesEffect>
+                  {{ls.strings.default.devices}}
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item" *ngFor="let device of controlDevices"
+                    (click)="changeControlDevice(device)">{{device.getUsername()}}</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h6 class="selectedDevice">{{ls.strings.default.selectedDevice}} {{controlDevice.getUsername()}} </h6>
+
+            </div>
+            <div class="col-md-3">
+              <h6 class=location>{{ls.strings.default.location}}: </h6>
+
+            </div>
+          </div>
+          <div class="limits">
+            <div class="row">
+              <div class="col-md-2">
+                <h6>Change limits:</h6>
+              </div>
+
+
+              <div class="col-md-2 ">
+                <h5>{{ls.strings.default.temperature}}</h5>
+                <div *ngIf="!isMobileMenu()" class="temperature-slider limit" style="height: 200px;">
+                  <ng5-slider  [(value)]="limit_temperature" (click)="changeTemperatureLimit()"
+                    [options]="temperatureOptions"></ng5-slider>
+
+                </div>
+                <div *ngIf="isMobileMenu()" class="temperature-slider limit" style="height: 100px;">
+                  <ng5-slider [(value)]="limit_temperature" (click)="changeTemperatureLimit()"
+                    [options]="mobileTemperatureOptions"></ng5-slider>
+                </div>
+              </div>
+
+
+
+              <div class="col-md-2 ">
+                <h5>{{ls.strings.default.humidity}}</h5>
+                <div *ngIf="!isMobileMenu()" class="humidity-slider limit" style="height: 200px;">
+                  <ng5-slider  [(value)]="limit_humidity" (click)="changeHumidityLimit()"
+                    [options]="humidityOptions">
+                  </ng5-slider>
+                 
+                </div>
+                <div class="humidity-slider limit" *ngIf="isMobileMenu()" style="height: 100px;">
+                  <ng5-slider  [(value)]="limit_humidity" (click)="changeHumidityLimit()"
+                    [options]="mobileHumidityOptions">
+                  </ng5-slider>
+                </div>
+              </div>
+
+
+
+              <div class="col-md-2 ">
+                <h5>CO:</h5>
+                <div class="co-slider limit"  *ngIf="!isMobileMenu()" style="height: 200px;">
+                  <ng5-slider [(value)]="limit_co" (click)="changeCoLimit()"
+                    [options]="coOptions">
+                  </ng5-slider>
+                 
+                </div>
+
+                <div  *ngIf="isMobileMenu()" class="co-slider limit" style="height: 100px;">
+                  <ng5-slider [(value)]="limit_co" (click)="changeCoLimit()"
+                    [options]="mobileCoOptions">
+                  </ng5-slider>
+                </div>
+              </div>
+
+
+              <div class="col-md-2 ">
+                <h5>Ch4:</h5>
+                <div *ngIf="!isMobileMenu()" class="ch4-slider limit" style="height: 200px;">
+                  <ng5-slider  [(value)]="limit_ch4" (click)="changeCh4Limit()"
+                    [options]="ch4Options">
+                  </ng5-slider>
+               
+                </div>
+                <div  *ngIf="isMobileMenu()" class="ch4-slider limit" style="height: 100px;">
+                 
+                  <ng5-slider  [(value)]="limit_ch4" (click)="changeCh4Limit()"
+                    [options]="mobileCh4Options">
+                  </ng5-slider>
+                </div>
+              </div>
+
+              <div class="col-md-2 ">
+                <h5>{{ls.strings.default.smoke}}</h5>
+                <div *ngIf="!isMobileMenu()"  class="smoke-slider limit" style="height: 200px;">
+                  <ng5-slider [(value)]="limit_smoke" (click)="changeSmokeLimit()"
+                    [options]="smokeOptions">
+                  </ng5-slider>
+                
+                </div>
+                <div *ngIf="isMobileMenu()" class="smoke-slider limit" style="height: 100px;">
+                
+                  <ng5-slider  [(value)]="limit_smoke" (click)="changeSmokeLimit()"
+                    [options]="mobileSmokeOptions">
+                  </ng5-slider>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="windows">
+            <div class="row">
+            </div>
+            <div class="row">
+              <div class="col-md-2">
+                <button mat-raised-button style="background-color:#c40e1d ; color:#FFF" (click)="closeWindow()"
+                  matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                  class="windowControl ">
+                  {{ls.strings.default.closeWindow}}
+                </button>
+              </div>
+              <div class="col-md-2">
+
+                <button mat-raised-button style="background-color:#79c40e ; color:#FFF" (click)="openWindow()"
+                  matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                  class="windowControl ">
+                  {{ls.strings.default.openWindow}}
+                </button>
+
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <!--     <button mat-button mat-dialog-close style="background-color:#79c40e ; color:#FFF">Close</button>
+ -->
+    </div>

@@ -1,0 +1,24 @@
+
+
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header card-header-icon card-header-info">
+          <div class="card-icon">
+            <i class="material-icons">info</i>
+          </div>
+          <h5 class="card-title">{{ls.strings.default.confirmDialog_question}}</h5>
+        </div>
+        <div class="card-body"> 
+            <div class="row">
+                <div class="col-md-5">
+                    <button mdbBtn style="background-color:#79c40e; color:#FFF" mdbWavesEffect type="submit" class="btn  pull-right" (click)="accept()">{{ls.strings.default.confirmDialog_yes}}</button>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-md-6">
+                    <button mdbBtn mdbWavesEffect type="submit" class="btn  pull-right" (click)="decline()">{{ls.strings.default.confirmDialog_no}}</button>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+      </div>

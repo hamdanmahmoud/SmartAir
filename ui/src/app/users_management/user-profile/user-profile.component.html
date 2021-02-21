@@ -1,0 +1,74 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">{{ls.strings.default.userProfile_editProfile}}</h4>
+                        <p class="card-category">{{ls.strings.default.userProfile_lowTitle}}</p>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="userProfile">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="username" name="username" placeholder="{{ls.strings.default.userProfile_username}}" [attr.disabled]="true">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="lastName" name="lastName" placeholder="{{ls.strings.default.userProfile_lastName}}" >
+                                        <mat-error *ngIf="userProfile.get('lastName')?.invalid">{{ls.strings.default.createUsers_requiredField}}</mat-error>
+
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="firstName" name="firstName" placeholder="{{ls.strings.default.userProfile_firstName}}" >
+                                        <mat-error *ngIf="userProfile.get('firstName')?.invalid">{{ls.strings.default.createUsers_requiredField}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="email"name="email"  placeholder="{{ls.strings.default.userProfile_email}}" >
+                                        <mat-error *ngIf="userProfile.get('email')?.invalid">{{ls.strings.default.createUsers_requiredField}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="details" name="details" placeholder="{{ls.strings.default.userProfile_otherDetails}}"  type="text">
+                                        <mat-error *ngIf="userProfile.get('details')?.invalid">{{ls.strings.default.createUsers_requiredField}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="address" name="address" placeholder="{{ls.strings.default.userProfile_address}}" >
+                                        <mat-error *ngIf="userProfile.get('address')?.invalid">{{ls.strings.default.createUsers_requiredField}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="phoneNo" name="phoneNo" placeholder="{{ls.strings.default.userProfile_phoneNo}}"  type="text">
+                                        <mat-error *ngIf="userProfile.get('phoneNo')?.invalid">{{ls.strings.default.createUsers_requiredField}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <button mat-raised-button type="submit" style="background-color:#79c40e; color:#FFF" [disabled]="!canEditElement" (click)="saveProfile()"class="btn pull-right">{{ls.strings.default.userProfile_saveProfileBtn}}</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

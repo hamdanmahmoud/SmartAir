@@ -1,0 +1,30 @@
+.language1 {
+    content: url('/../../assets/img/english_language_icon.png');
+    width:20px;
+    height: 20px;
+    margin-right:10px;
+    cursor: pointer;
+}
+
+.language2 {
+    content: url('/../../assets/img/romanian_language_icon.png');
+    cursor: pointer;
+    width:30px;
+    height: 20px;
+}
+.language3 {
+    content: url('/../../assets/img/french_language_icon.png');
+    cursor: pointer;
+    width:22px;
+    height: 22px;
+    margin-right:10px;
+}
+.login{
+    background-color:#6200EE ;
+    color:#FFF
+
+}
+.logout{
+    background-color:#6200EE ;
+    color:#FFF
+}

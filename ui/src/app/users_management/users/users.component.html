@@ -1,0 +1,123 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Users</h4>
+                        <p class="card-category"> {{ls.strings.default.users_viewOrAdd}} </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-layout">
+                            <form>
+                                <div class="row">
+                                    <table class="table" mat-table [dataSource]="dataSource" matSort
+                                        class="container-fluid" style="text-align: left;">
+                                        <ng-container matColumnDef="active">
+                                            <mat-header-cell class="text-primary" *matHeaderCellDef>
+                                                {{ls.strings.default.users_active}}
+                                            </mat-header-cell>
+                                            <mat-cell  *matCellDef="let element" [attr.data-label]="this.ls.strings.default.users_active">
+                                                <div *ngIf="element.active == true; else elseDiv">
+                                                    {{ls.strings.default.yes}}
+                                                </div>
+                                                <ng-template #elseDiv>
+                                                    {{ls.strings.default.no}}
+                                                </ng-template>
+                                            </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="firstName">
+                                            <mat-header-cell class="text-primary"  *matHeaderCellDef>
+                                                {{ls.strings.default.users_firstName}}
+                                            </mat-header-cell>
+                                            <mat-cell  *matCellDef="let element" [attr.data-label]="this.ls.strings.default.users_firstName">{{element.firstName}}</mat-cell>
+
+                                        </ng-container>
+                                        <ng-container matColumnDef="lastName">
+                                            <mat-header-cell class="text-primary"  *matHeaderCellDef>
+                                                {{ls.strings.default.users_lastName}}</mat-header-cell>
+                                            <mat-cell  *matCellDef="let element" [attr.data-label]="this.ls.strings.default.users_lastName">{{element.lastName}} </mat-cell>
+
+                                        </ng-container>
+                                        <ng-container matColumnDef="email">
+                                            <mat-header-cell class="text-primary" *matHeaderCellDef>
+                                                {{ls.strings.default.users_email}}</mat-header-cell>
+                                            <mat-cell  *matCellDef="let element" [attr.data-label]="this.ls.strings.default.users_email">{{element.email}}</mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="username">
+                                            <mat-header-cell class="text-primary" *matHeaderCellDef>
+                                                {{ls.strings.default.users_username}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" [attr.data-label]="this.ls.strings.default.users_username">{{element.username}}</mat-cell>
+
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="role">
+                                            <mat-header-cell class="text-primary"  *matHeaderCellDef>
+                                                {{ls.strings.default.users_role}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" [attr.data-label]="this.ls.strings.default.users_role">{{element.getRoles()}}</mat-cell>
+
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="update">
+                                            <mat-header-cell class="text-primary"  *matHeaderCellDef>
+                                                {{ls.strings.default.users_update}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" [attr.data-label]="this.ls.strings.default.users_update" (click)="editUser(element)">
+                                                <a mat-button [disabled]="!authGuard.canUpdate(router.url)"
+                                                    class="customedit">
+                                                    <mat-icon>edit</mat-icon>
+                                                </a>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="remove">
+                                            <mat-header-cell class="text-primary" *matHeaderCellDef>
+                                                {{ls.strings.default.users_remove}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element"  [attr.data-label]="this.ls.strings.default.users_remove" (click)="removeUser(element)">
+                                                <a mat-button [disabled]="!authGuard.canDelete(router.url)"
+                                                    class="customedit">
+                                                    <mat-icon>delete</mat-icon>
+                                                </a>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="reset-password">
+                                            <mat-header-cell class="text-primary"  *matHeaderCellDef>
+                                                {{ls.strings.default.users_modifyPass}}</mat-header-cell>
+                                            <mat-cell  *matCellDef="let element" [attr.data-label]="this.ls.strings.default.users_modifyPass">
+                                                <a mat-button class="customedit" (click)="resetPassword(element)"
+                                                    [disabled]="!authGuard.canUpdate(router.url)">
+                                                    <mat-icon>vpn_key</mat-icon>
+                                                </a>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                        <mat-row  *matRowDef="let row; columns: displayedColumns;"  [attr.data-label]="row"class="rows" [ngClass]="{'make-pink': row.active == false }"></mat-row>
+                                   
+                                     </table>
+                                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+
+                                </div>
+
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button mdbBtn type="button" style="background-color:#79c40e; color:#FFF"[disabled]="!authGuard.canCreate(router.url)"
+                                            class="btn  pull-right  " (click)="addUsersDialog()"mdbWavesEffect><i
+                                                class="material-icons" >
+                                                person_add
+                                            </i> {{ls.strings.default.users_addUsersBtn}}</button>
+                                        
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>

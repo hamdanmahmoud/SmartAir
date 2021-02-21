@@ -1,0 +1,103 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">{{ls.strings.default.editUser_title}}</h4>
+                        <p class="card-category">{{ls.strings.default.editUser_lowTitle}}</p>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="userDetails">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="username"
+                                            placeholder={{ls.strings.default.editUser_userid}} disabled>
+                                        <!--  <mat-error *ngIf="userDetails.get('username')?.invalid">
+                                            {{ls.strings.default.createUsers_requiredField}}</mat-error> -->
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="email"
+                                            placeholder={{ls.strings.default.editUser_email}} type="email">
+                                        <mat-error *ngIf="userDetails.get('email')?.invalid">
+                                            {{ls.strings.default.createUsers_requiredField}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="firstName"
+                                            placeholder={{ls.strings.default.editUser_firstName}} type="text">
+                                        <mat-error *ngIf="userDetails.get('firstName')?.invalid">
+                                            {{ls.strings.default.createUsers_requiredField}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="lastName"
+                                            placeholder={{ls.strings.default.editUser_lastName}} type="text">
+                                        <mat-error *ngIf="userDetails.get('lastName')?.invalid">
+                                            {{ls.strings.default.createUsers_requiredField}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput formControlName="address"
+                                            placeholder="{{ls.strings.default.editUser_address}}" type="text">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- <mat-form-field>
+                                        <mat-label>{{ls.strings.default.editUser_role}}</mat-label>
+                                        <mat-select formControlName="role">
+                                            <mat-option *ngFor="let role of roles" [value]="role.getName()">
+                                                {{role.getName()}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="userDetails.get('role')?.invalid">
+                                            {{ls.strings.default.createUsers_requiredField}}</mat-error>
+                                    </mat-form-field> -->
+
+                                    <mat-list-item class="role-multiple-select" role="listitem">
+                                        <mat-form-field class="selectForm">
+                                            <mat-label>{{ls.strings.default.editUser_role}}</mat-label>
+                                            <mat-select aria-placeholder="Roles" class="filter-select"
+                                                formControlName="roles" multiple [(ngModel)]="selectedRoles">
+                                                <mat-option *ngFor="let role of roles" [value]="role.getName()">
+                                                    {{role.getName()}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </mat-list-item>
+                                </div>
+                            </div>
+                            <div class="row" class="buttonsBlock">
+                                <div class="col-md-12">
+                                    <button mdbWavesEffect mdbBtn type="submit" class="btn  pull-left btn-block"
+                                        (click)="sendPassword()">{{ls.strings.default.editUser_sendPass}}</button>
+                                    <button mdbWavesEffect [ngClass]="active ? 'btn-danger' : 'btn-success'" mdbBtn type="submit" class="btn pull-center btn-block"
+                                        (click)='changeActiveStatus()'>{{this.active ? ls.strings.default.editUser_makeInactive : ls.strings.default.editUser_makeActive}}</button>
+                                    <button mdbWavesEffect mdbBtn type="submit" class="btn  pull-right btn-block"
+                                        (click)='updateUser()'>{{ls.strings.default.editUser_editUser}}</button>
+                                </div>
+
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
